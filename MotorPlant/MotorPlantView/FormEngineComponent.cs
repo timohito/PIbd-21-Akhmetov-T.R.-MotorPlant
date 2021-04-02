@@ -12,18 +12,11 @@ namespace MotorPlantView
         [Dependency]
         public new IUnityContainer Container { get; set; }
 
-        public int Id 
-        { 
-            get { return Convert.ToInt32(comboBoxComponent.SelectedValue); } 
-            set { comboBoxComponent.SelectedValue = value; }
-        }
+        public int Id { get { return Convert.ToInt32(comboBoxComponent.SelectedValue); } set { comboBoxComponent.SelectedValue = value; } }
 
         public string ComponentName { get { return comboBoxComponent.Text; } }
 
-        public int Count { 
-            get { return Convert.ToInt32(textBoxCount.Text); } 
-            set { textBoxCount.Text = value.ToString(); } 
-        }
+        public int Count { get { return Convert.ToInt32(textBoxCount.Text); } set { textBoxCount.Text = value.ToString(); } }
 
         public FormEngineComponent(ComponentLogic logic)
         {
