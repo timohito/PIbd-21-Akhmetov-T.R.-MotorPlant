@@ -148,6 +148,10 @@
       <Project>{b85184e4-71c7-42c5-8ab4-314a1abea338}</Project>
       <Name>MotorPlantBusinessLogic</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MotorPlantFileImplement\MotorPlantFileImplement.csproj">
+      <Project>{d1eae730-99a9-4a9c-bc52-652b599a725c}</Project>
+      <Name>MotorPlantFileImplement</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MotorPlantListImplement\MotorPlantListImplement.csproj">
       <Project>{C4357D9A-C55D-4E6C-804E-153B43399EDC}</Project>
       <Name>MotorPlantListImplement</Name>
