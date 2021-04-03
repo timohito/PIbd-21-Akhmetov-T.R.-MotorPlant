@@ -103,8 +103,8 @@ namespace MotorPlantFileImplement.Implements
 				EngineName = Engine.EngineName,
 				Price = Engine.Price,
 				EngineComponents = Engine.EngineComponents
-				.ToDictionary(recEC => recEC.Key, recPC =>
-				(source.Components.FirstOrDefault(recC => recC.Id == recPC.Key)?.ComponentName, recPC.Value))
+.ToDictionary(recEC => recEC.Key, recEC =>
+(source.Components.FirstOrDefault(recC => recC.Id == recEC.Key)?.ComponentName, recEC.Value))
 			};
 		}
 	}

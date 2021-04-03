@@ -43,6 +43,7 @@ namespace MotorPlantListImplement.Implements
 			}
 			return result;
 		}
+
 		public EngineViewModel GetElement(EngineBindingModel model)
 		{
 			if (model == null)
@@ -58,6 +59,7 @@ namespace MotorPlantListImplement.Implements
 			}
 			return null;
 		}
+
 		public void Insert(EngineBindingModel model)
 		{
 			Engine tempEngine = new Engine { Id = 1, EngineComponents = new Dictionary<int, int>() };
@@ -70,6 +72,7 @@ namespace MotorPlantListImplement.Implements
 			}
 			source.Engines.Add(CreateModel(model, tempEngine));
 		}
+
 		public void Update(EngineBindingModel model)
 		{
 			Engine tempEngine = null;
@@ -86,6 +89,7 @@ namespace MotorPlantListImplement.Implements
 			}
 			CreateModel(model, tempEngine);
 		}
+
 		public void Delete(EngineBindingModel model)
 		{
 			for (int i = 0; i < source.Engines.Count; ++i)
@@ -98,6 +102,7 @@ namespace MotorPlantListImplement.Implements
 			}
 			throw new Exception("Элемент не найден");
 		}
+		
 		private Engine CreateModel(EngineBindingModel model, Engine engine)
 		{
 			engine.EngineName = model.EngineName;

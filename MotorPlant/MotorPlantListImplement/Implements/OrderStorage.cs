@@ -113,30 +113,19 @@ namespace MotorPlantListImplement.Implements
             return order;
         }
 
-        private OrderViewModel CreateModel(Order order)
+        private OrderViewModel CreateModel(Order Order)
         {
-            OrderViewModel tempOrder = new OrderViewModel
+            return new OrderViewModel
             {
-                Id = order.Id,
-                EngineId = order.EngineId,
-                EngineName = string.Empty,
-                Count = order.Count,
-                Sum = order.Sum,
-                Status = order.Status,
-                DateCreate = order.DateCreate,
-                DateImplement = order.DateImplement
+                Id = Order.Id,
+                EngineId = Order.EngineId,
+                EngineName = source.Engines.FirstOrDefault(e=>e.Id==Order.EngineId)?.EngineName,
+                Count = Order.Count,
+                Status = Order.Status,
+                Sum = Order.Sum,
+                DateCreate = Order.DateCreate,
+                DateImplement = Order.DateImplement,
             };
-
-            foreach (var engine in source.Engines)
-            {
-                if (engine.Id == order.EngineId)
-                {
-                    tempOrder.EngineName = engine.EngineName;
-                    break;
-                }
-            }
-
-            return tempOrder;
         }
     }
 }

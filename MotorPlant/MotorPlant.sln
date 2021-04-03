@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MotorPlantListImplement", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MotorPlantFileImplement", "MotorPlantFileImplement\MotorPlantFileImplement.csproj", "{D1EAE730-99A9-4A9C-BC52-652B599A725C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotorPlantDatabaseImplement", "MotorPlantDatabaseImplement\MotorPlantDatabaseImplement.csproj", "{BFF1D3D7-2200-49E9-9C74-A032182B8A37}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{D1EAE730-99A9-4A9C-BC52-652B599A725C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D1EAE730-99A9-4A9C-BC52-652B599A725C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D1EAE730-99A9-4A9C-BC52-652B599A725C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFF1D3D7-2200-49E9-9C74-A032182B8A37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFF1D3D7-2200-49E9-9C74-A032182B8A37}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFF1D3D7-2200-49E9-9C74-A032182B8A37}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFF1D3D7-2200-49E9-9C74-A032182B8A37}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
