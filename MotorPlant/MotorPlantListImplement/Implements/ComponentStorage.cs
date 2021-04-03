@@ -74,7 +74,7 @@ namespace MotorPlantListImplement.Implements
 
 		public void Update(ComponentBindingModel model)
 		{
-			Component tempComponent = null;
+		Component tempComponent = null;
 			foreach (var component in source.Components)
 			{
 				if (component.Id == model.Id)
