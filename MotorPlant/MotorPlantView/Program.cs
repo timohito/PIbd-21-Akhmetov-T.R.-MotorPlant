@@ -31,6 +31,7 @@ namespace MotorPlantView
 			currentContainer.RegisterType<ComponentLogic>(new HierarchicalLifetimeManager());
 			currentContainer.RegisterType<OrderLogic>(new HierarchicalLifetimeManager());
 			currentContainer.RegisterType<EngineLogic>(new HierarchicalLifetimeManager());
+			currentContainer.RegisterType<ReportLogic>(new HierarchicalLifetimeManager());
 			return currentContainer;
 		}
 	}

@@ -19,9 +19,9 @@ namespace MotorPlantListImplement.Implements
         public List<OrderViewModel> GetFullList()
         {
             List<OrderViewModel> result = new List<OrderViewModel>();
-            foreach (var order in source.Orders)
+            foreach (var component in source.Orders)
             {
-                result.Add(CreateModel(order));
+                result.Add(CreateModel(component));
             }
             return result;
         }
@@ -33,11 +33,11 @@ namespace MotorPlantListImplement.Implements
                 return null;
             }
             List<OrderViewModel> result = new List<OrderViewModel>();
-            foreach (var order in source.Orders)
+            foreach (var Order in source.Orders)
             {
-                if (order.EngineId == model.EngineId)
+                if (Order.EngineId == model.EngineId)
                 {
-                    result.Add(CreateModel(order));
+                    result.Add(CreateModel(Order));
                 }
             }
             return result;
@@ -49,11 +49,11 @@ namespace MotorPlantListImplement.Implements
             {
                 return null;
             }
-            foreach (var order in source.Orders)
+            foreach (var Order in source.Orders)
             {
-                if (order.Id == model.Id || order.EngineId == model.EngineId)
+                if (Order.Id == model.Id)
                 {
-                    return CreateModel(order);
+                    return CreateModel(Order);
                 }
             }
             return null;
@@ -62,11 +62,11 @@ namespace MotorPlantListImplement.Implements
         public void Insert(OrderBindingModel model)
         {
             Order tempOrder = new Order { Id = 1 };
-            foreach (var order in source.Orders)
+            foreach (var Order in source.Orders)
             {
-                if (order.Id >= tempOrder.Id)
+                if (Order.Id >= tempOrder.Id)
                 {
-                    tempOrder.Id = order.Id + 1;
+                    tempOrder.Id = Order.Id + 1;
                 }
             }
             source.Orders.Add(CreateModel(model, tempOrder));
@@ -75,11 +75,11 @@ namespace MotorPlantListImplement.Implements
         public void Update(OrderBindingModel model)
         {
             Order tempOrder = null;
-            foreach (var order in source.Orders)
+            foreach (var Order in source.Orders)
             {
-                if (order.Id == model.Id)
+                if (Order.Id == model.Id)
                 {
-                    tempOrder = order;
+                    tempOrder = Order;
                 }
             }
             if (tempOrder == null)
@@ -102,15 +102,15 @@ namespace MotorPlantListImplement.Implements
             throw new Exception("Элемент не найден");
         }
 
-        private Order CreateModel(OrderBindingModel model, Order order)
+        private Order CreateModel(OrderBindingModel model, Order Order)
         {
-            order.EngineId = model.EngineId;
-            order.Count = model.Count;
-            order.Status = model.Status;
-            order.Sum = model.Sum;
-            order.DateCreate = model.DateCreate;
-            order.DateImplement = model.DateImplement;
-            return order;
+            Order.EngineId = model.EngineId;
+            Order.Count = model.Count;
+            Order.Status = model.Status;
+            Order.Sum = model.Sum;
+            Order.DateCreate = model.DateCreate;
+            Order.DateImplement = model.DateImplement;
+            return Order;
         }
 
         private OrderViewModel CreateModel(Order Order)
