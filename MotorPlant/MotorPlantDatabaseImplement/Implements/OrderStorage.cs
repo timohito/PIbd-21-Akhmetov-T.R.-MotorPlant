@@ -39,7 +39,7 @@ namespace MotorPlantDatabaseImplement.Implements
             using (var context = new MotorPlantDatabase())
             {
                 return context.Orders
-                .Where(rec => rec.EngineId == model.EngineId)
+                .Where(rec => rec.EngineId == model.EngineId && rec.DateCreate >= model.DateFrom && rec.DateCreate <= model.DateTo)
                 .Select(rec => new OrderViewModel
                 {
                     Id = rec.Id,
@@ -117,6 +117,7 @@ namespace MotorPlantDatabaseImplement.Implements
                 context.SaveChanges();
             }
         }
+
         public void Delete(OrderBindingModel model)
         {
             using (var context = new MotorPlantDatabase())
@@ -133,6 +134,7 @@ namespace MotorPlantDatabaseImplement.Implements
                 }
             }
         }
+
         private Order CreateModel(OrderBindingModel model, Order order)
         {
             if (model == null)

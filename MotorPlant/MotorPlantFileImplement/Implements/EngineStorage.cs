@@ -69,31 +69,31 @@ namespace MotorPlantFileImplement.Implements
 				throw new Exception("Элемент не найден");
 			}
 		}
-		private Engine CreateModel(EngineBindingModel model, Engine Engine)
+		private Engine CreateModel(EngineBindingModel model, Engine engine)
 		{
-			Engine.EngineName = model.EngineName;
-			Engine.Price = model.Price;
+			engine.EngineName = model.EngineName;
+			engine.Price = model.Price;
 			// удаляем убранные
-			foreach (var key in Engine.EngineComponents.Keys.ToList())
+			foreach (var key in engine.EngineComponents.Keys.ToList())
 			{
 				if (!model.EngineComponents.ContainsKey(key))
 				{
-					Engine.EngineComponents.Remove(key);
+					engine.EngineComponents.Remove(key);
 				}
 			}
 			// обновляем существуюущие и добавляем новые
 			foreach (var component in model.EngineComponents)
 			{
-				if (Engine.EngineComponents.ContainsKey(component.Key))
+				if (engine.EngineComponents.ContainsKey(component.Key))
 				{
-					Engine.EngineComponents[component.Key] = model.EngineComponents[component.Key].Item2;
+					engine.EngineComponents[component.Key] = model.EngineComponents[component.Key].Item2;
 				}
 				else
 				{
-					Engine.EngineComponents.Add(component.Key, model.EngineComponents[component.Key].Item2);
+					engine.EngineComponents.Add(component.Key, model.EngineComponents[component.Key].Item2);
 				}
 			}
-			return Engine;
+			return engine;
 		}
 		private EngineViewModel CreateModel(Engine Engine)
 		{
@@ -103,8 +103,8 @@ namespace MotorPlantFileImplement.Implements
 				EngineName = Engine.EngineName,
 				Price = Engine.Price,
 				EngineComponents = Engine.EngineComponents
-.ToDictionary(recPC => recPC.Key, recPC =>
-(source.Components.FirstOrDefault(recC => recC.Id == recPC.Key)?.ComponentName, recPC.Value))
+.ToDictionary(recEC => recEC.Key, recEC =>
+(source.Components.FirstOrDefault(recC => recC.Id == recEC.Key)?.ComponentName, recEC.Value))
 			};
 		}
 	}
