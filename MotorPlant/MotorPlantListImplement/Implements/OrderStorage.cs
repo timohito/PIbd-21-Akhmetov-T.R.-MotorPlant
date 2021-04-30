@@ -35,7 +35,7 @@ namespace MotorPlantListImplement.Implements
             List<OrderViewModel> result = new List<OrderViewModel>();
             foreach (var order in source.Orders)
             {
-                if (order.EngineId == model.EngineId)
+                if (order.EngineId == model.EngineId || (order.DateCreate >= model.DateFrom && order.DateCreate <= model.DateTo))
                 {
                     result.Add(CreateModel(order));
                 }
@@ -49,11 +49,12 @@ namespace MotorPlantListImplement.Implements
             {
                 return null;
             }
-            foreach (var Order in source.Orders)
+            foreach (var order in source.Orders )
             {
-                if (Order.Id == model.Id)
+                if (order.Id == model.Id || (order.EngineId ==
+               model.EngineId && order.Count == model.Count))
                 {
-                    return CreateModel(Order);
+                    return CreateModel(order);
                 }
             }
             return null;

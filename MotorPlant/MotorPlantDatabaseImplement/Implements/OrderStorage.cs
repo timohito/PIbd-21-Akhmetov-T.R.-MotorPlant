@@ -39,7 +39,8 @@ namespace MotorPlantDatabaseImplement.Implements
             using (var context = new MotorPlantDatabase())
             {
                 return context.Orders
-                .Where(rec => rec.EngineId == model.EngineId && rec.DateCreate >= model.DateFrom && rec.DateCreate <= model.DateTo)
+                .Where(rec => rec.EngineId == model.EngineId || (rec.DateCreate >= model.DateFrom && rec.DateCreate <= model.DateTo))
+                .Include(rec => rec.Engine)
                 .Select(rec => new OrderViewModel
                 {
                     Id = rec.Id,
