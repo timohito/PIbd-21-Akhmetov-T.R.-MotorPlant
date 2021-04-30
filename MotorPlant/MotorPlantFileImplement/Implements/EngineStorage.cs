@@ -38,9 +38,9 @@ namespace MotorPlantFileImplement.Implements
 			{
 				return null;
 			}
-			var engine = source.Engines
+			var Engine = source.Engines
 			.FirstOrDefault(rec => rec.EngineName == model.EngineName || rec.Id == model.Id);
-			return engine != null ? CreateModel(engine) : null;
+			return Engine != null ? CreateModel(Engine) : null;
 		}
 		public void Insert(EngineBindingModel model)
 		{
