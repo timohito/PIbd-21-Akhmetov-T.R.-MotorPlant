@@ -111,7 +111,7 @@ namespace MotorPlantView
 					ClientId = Convert.ToInt32(comboBoxClients.SelectedValue),
 					EngineId = Convert.ToInt32(comboBoxEngine.SelectedValue),
 					Count = Convert.ToInt32(textBoxCount.Text),
-					Sum = Convert.ToDecimal(textBoxSum.Text),
+					Sum = Convert.ToDecimal(textBoxSum.Text)
 				});
 				MessageBox.Show("Сохранение прошло успешно", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information);
 				DialogResult = DialogResult.OK;

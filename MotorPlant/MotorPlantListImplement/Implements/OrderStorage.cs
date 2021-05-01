@@ -101,7 +101,8 @@ namespace MotorPlantListImplement.Implements
             }
             foreach (var order in source.Orders)
             {
-                if (order.Id == model.Id)
+                if (order.Id == model.Id || (order.EngineId ==
+               model.EngineId && order.Count == model.Count))
                 {
                     return CreateModel(order);
                 }
