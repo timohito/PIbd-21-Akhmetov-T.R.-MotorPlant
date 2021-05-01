@@ -8,6 +8,10 @@ namespace MotorPlantDatabaseImplement.Models
 	{
 		public int Id { get; set; }
 
+		public int? ImplementerId { get; set; }
+
+		public virtual Implementer Implementer { get; set; }
+
 		public int EngineId { get; set; }
 
 		public int ClientId { get; set; }
