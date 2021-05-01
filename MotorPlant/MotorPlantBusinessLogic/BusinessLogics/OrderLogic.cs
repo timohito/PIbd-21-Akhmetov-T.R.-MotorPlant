@@ -10,10 +10,12 @@ namespace MotorPlantBusinessLogic.BusinessLogics
 	public class OrderLogic
 	{
 		private readonly IOrderStorage _orderStorage;
+
 		public OrderLogic(IOrderStorage orderStorage)
 		{
 			_orderStorage = orderStorage;
 		}
+
 		public List<OrderViewModel> Read(OrderBindingModel model)
 		{
 			if (model == null)
@@ -26,17 +28,20 @@ namespace MotorPlantBusinessLogic.BusinessLogics
 			}
 			return _orderStorage.GetFilteredList(model);
 		}
+
 		public void CreateOrder(CreateOrderBindingModel model)
 		{
 			_orderStorage.Insert(new OrderBindingModel
 			{
 				EngineId = model.EngineId,
+				ClientId = model.ClientId,
 				Count = model.Count,
 				Sum = model.Sum,
 				DateCreate = DateTime.Now,
 				Status = OrderStatus.Принят
 			});
 		}
+
 		public void TakeOrderInWork(ChangeStatusBindingModel model)
 		{
 			var order = _orderStorage.GetElement(new OrderBindingModel { Id = model.OrderId });
@@ -52,6 +57,7 @@ namespace MotorPlantBusinessLogic.BusinessLogics
 			{
 				Id = order.Id,
 				EngineId = order.EngineId,
+				ClientId = order.ClientId,
 				Count = order.Count,
 				Sum = order.Sum,
 				DateCreate = order.DateCreate,
@@ -59,6 +65,7 @@ namespace MotorPlantBusinessLogic.BusinessLogics
 				Status = OrderStatus.Выполняется
 			});
 		}
+
 		public void FinishOrder(ChangeStatusBindingModel model)
 		{
 			var order = _orderStorage.GetElement(new OrderBindingModel { Id = model.OrderId });
@@ -74,6 +81,7 @@ namespace MotorPlantBusinessLogic.BusinessLogics
 			{
 				Id = order.Id,
 				EngineId = order.EngineId,
+				ClientId = order.ClientId,
 				Count = order.Count,
 				Sum = order.Sum,
 				DateCreate = order.DateCreate,
@@ -97,6 +105,7 @@ namespace MotorPlantBusinessLogic.BusinessLogics
 			{
 				Id = order.Id,
 				EngineId = order.EngineId,
+				ClientId = order.ClientId,
 				Count = order.Count,
 				Sum = order.Sum,
 				DateCreate = order.DateCreate,

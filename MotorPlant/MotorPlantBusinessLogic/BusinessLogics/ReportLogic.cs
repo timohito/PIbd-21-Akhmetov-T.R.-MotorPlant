@@ -53,6 +53,7 @@ namespace MotorPlantBusinessLogic.BusinessLogics
             return _orderStorage.GetFilteredList(new OrderBindingModel { DateFrom = model.DateFrom, DateTo = model.DateTo })
             .Select(x => new ReportOrdersViewModel
             {
+                ClientFIO = x.ClientFIO,
                 DateCreate = x.DateCreate,
                 EngineName = x.EngineName,
                 Count = x.Count,

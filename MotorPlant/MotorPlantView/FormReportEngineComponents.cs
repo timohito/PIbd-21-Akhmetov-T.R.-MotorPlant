@@ -17,7 +17,7 @@ namespace MotorPlantView
             InitializeComponent();
             this.logic = logic;
         }
-        private void FormReportPrintedComponents_Load(object sender, EventArgs e)
+        private void FormReportEngineComponents_Load(object sender, EventArgs e)
         {
             try
             {

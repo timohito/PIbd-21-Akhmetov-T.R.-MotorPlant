@@ -14,14 +14,17 @@ namespace MotorPlantFileImplement
 		private readonly string ComponentFileName = "Component.xml";
 		private readonly string OrderFileName = "Order.xml";
 		private readonly string EngineFileName = "Engine.xml";
+		private readonly string ClientFileName = "Client.xml";
 		public List<Component> Components { get; set; }
 		public List<Order> Orders { get; set; }
 		public List<Engine> Engines { get; set; }
+		public List<Client> Clients { get; set; }
 		private FileDataListSingleton()
 		{
 			Components = LoadComponents();
 			Orders = LoadOrders();
 			Engines = LoadEngines();
+			Clients = LoadClients();
 		}
 		public static FileDataListSingleton GetInstance()
 		{
@@ -36,6 +39,7 @@ namespace MotorPlantFileImplement
 			SaveComponents();
 			SaveOrders();
 			SaveEngines();
+			SaveClients();
 		}
 		private List<Component> LoadComponents()
 		{
@@ -68,6 +72,7 @@ namespace MotorPlantFileImplement
 					{
 						Id = Convert.ToInt32(elem.Attribute("Id").Value),
 						EngineId = Convert.ToInt32(elem.Element("EngineId").Value),
+						ClientId = Convert.ToInt32(elem.Element("ClientId")?.Value),
 						Count = Convert.ToInt32(elem.Element("Count").Value),
 						Sum = Convert.ToDecimal(elem.Element("Sum").Value),
 						Status = (OrderStatus)Convert.ToInt32(elem.Element("Status").Value),
@@ -103,6 +108,26 @@ namespace MotorPlantFileImplement
 			}
 			return list;
 		}
+		private List<Client> LoadClients()
+		{
+			var list = new List<Client>();
+			if (File.Exists(ClientFileName))
+			{
+				XDocument xDocument = XDocument.Load(ClientFileName);
+				var xElements = xDocument.Root.Elements("Clients").ToList();
+				foreach (var elem in xElements)
+				{
+					list.Add(new Client
+					{
+						Id = Convert.ToInt32(elem.Attribute("Id").Value),
+						ClientFIO = elem.Element("ClientFIO").Value,
+						Email = elem.Element("Email").Value,
+						Password = elem.Element("Password").Value
+					});
+				}
+			}
+			return list;
+		}
 		private void SaveComponents()
 		{
 			if (Components != null)
@@ -132,7 +157,8 @@ namespace MotorPlantFileImplement
 					new XElement("Sum", order.Sum),
 					new XElement("Status", (int)order.Status),
 					new XElement("DateCreate", order.DateCreate),
-					new XElement("DateImplement", order.DateImplement)
+					new XElement("DateImplement", order.DateImplement),
+					new XElement("ClientId", order.ClientId)
 					));
 				}
 				XDocument xDocument = new XDocument(xElement);
@@ -144,23 +170,40 @@ namespace MotorPlantFileImplement
 			if (Engines != null)
 			{
 				var xElement = new XElement("Engines");
-				foreach (var engine in Engines)
+				foreach (var Engine in Engines)
 				{
 					var compElement = new XElement("EngineComponents");
-					foreach (var component in engine.EngineComponents)
+					foreach (var component in Engine.EngineComponents)
 					{
 						compElement.Add(new XElement("EngineComponent",
 						new XElement("Key", component.Key),
 						new XElement("Value", component.Value)));
 					}
 					xElement.Add(new XElement("Engine",
-					new XAttribute("Id", engine.Id),
-					new XElement("EngineName", engine.EngineName),
-					new XElement("Price", engine.Price),
+					new XAttribute("Id", Engine.Id),
+					new XElement("EngineName", Engine.EngineName),
+					new XElement("Price", Engine.Price),
 					compElement));
 				}
 				XDocument xDocument = new XDocument(xElement);
 				xDocument.Save(EngineFileName);
+			}
+		}
+		private void SaveClients()
+		{
+			if (Clients != null)
+			{
+				var xElement = new XElement("Clients");
+				foreach (var client in Clients)
+				{
+					xElement.Add(new XElement("Client",
+					new XAttribute("Id", client.Id),
+					new XElement("ClientFIO", client.ClientFIO),
+					new XElement("Email", client.Email),
+					new XElement("Password", client.Password)));
+				}
+				XDocument xDocument = new XDocument(xElement);
+				xDocument.Save(ClientFileName);
 			}
 		}
 	}

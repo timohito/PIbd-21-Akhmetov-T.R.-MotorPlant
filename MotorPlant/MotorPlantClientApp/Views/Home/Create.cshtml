@@ -1,0 +1,50 @@
+﻿@{
+    ViewData["Title"] = "Create";
+}
+<div class="text-center">
+    <h2 class="display-4">Create order</h2>
+</div>
+<form method="post">
+    <div class="row">
+        <div class="col-4">Engine:</div>
+        <div class="col-8">
+            <select id="engine" name="engine" class="form-control" asp-items="@(new SelectList(@ViewBag.Engines,"Id", "EngineName"))"></select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4">Count:</div>
+        <div class="col-8"><input type="text" name="count" id="count" /></div>
+    </div>
+    <div class="row">
+        <div class="col-4">Sum:</div>
+        <div class="col-8">
+            <input type="text" id="sum" name="sum" readonly="true" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-8"></div>
+        <div class="col-4"><input type="submit" value="Create" class="btn btnprimary" /></div>
+    </div>
+</form>
+<script>
+    $('#engine').on('change', function () {
+        check();
+    });
+    $('#count').on('change', function () {
+        check();
+    });
+    function check() {
+        var count = $('#count').val();
+        var engine = $('#engine').val();
+        if (count && engine) {
+            $.ajax({
+                method: "POST",
+                url: "/Home/Calc",
+                data: { count: count, engine: engine },
+                success: function (result) {
+                    $("#sum").val(result);
+                }
+            });
+        };
+    }
+</script>

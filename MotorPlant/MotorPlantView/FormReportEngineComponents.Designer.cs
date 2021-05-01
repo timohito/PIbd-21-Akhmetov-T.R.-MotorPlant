@@ -30,7 +30,7 @@
         {
             this.buttonSave = new System.Windows.Forms.Button();
             this.dataGridView = new System.Windows.Forms.DataGridView();
-            this.ColumnPrinted = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnEngine = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnComponent = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
@@ -51,7 +51,7 @@
             this.dataGridView.BackgroundColor = System.Drawing.SystemColors.InactiveCaption;
             this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.ColumnPrinted,
+            this.ColumnEngine,
             this.ColumnComponent,
             this.ColumnCount});
             this.dataGridView.Location = new System.Drawing.Point(9, 46);
@@ -59,11 +59,11 @@
             this.dataGridView.Size = new System.Drawing.Size(487, 357);
             this.dataGridView.TabIndex = 3;
             // 
-            // ColumnPrinted
+            // ColumnEngine
             // 
-            this.ColumnPrinted.HeaderText = "Набор";
-            this.ColumnPrinted.Name = "ColumnPrinted";
-            this.ColumnPrinted.Width = 200;
+            this.ColumnEngine.HeaderText = "Набор";
+            this.ColumnEngine.Name = "ColumnEngine";
+            this.ColumnEngine.Width = 200;
             // 
             // ColumnComponent
             // 
@@ -76,16 +76,16 @@
             this.ColumnCount.HeaderText = "Количество";
             this.ColumnCount.Name = "ColumnCount";
             // 
-            // FormReportPrintedComponents
+            // FormReportEngineComponents
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(505, 415);
             this.Controls.Add(this.dataGridView);
             this.Controls.Add(this.buttonSave);
-            this.Name = "FormReportPrintedComponents";
+            this.Name = "FormReportEngineComponents";
             this.Text = "Наборы по компонентам";
-            this.Load += new System.EventHandler(this.FormReportPrintedComponents_Load);
+            this.Load += new System.EventHandler(this.FormReportEngineComponents_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
             this.ResumeLayout(false);
 
@@ -95,7 +95,7 @@
 
         private System.Windows.Forms.Button buttonSave;
         private System.Windows.Forms.DataGridView dataGridView;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnPrinted;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnEngine;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnComponent;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnCount;
     }
