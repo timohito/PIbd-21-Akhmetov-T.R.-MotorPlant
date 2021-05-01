@@ -12,10 +12,17 @@ namespace MotorPlantBusinessLogic.ViewModels
 		public int Id { get; set; }
 
 		[DataMember]
+		public int? ImplementerId { get; set; }
+
+		[DataMember]
 		public int ClientId { get; set; }
 
 		[DataMember]
 		public int EngineId { get; set; }
+
+		[DataMember]
+		[DisplayName("ФИО Работника")]
+		public string ImplementerFIO { get; set; }
 
 		[DataMember]
 		[DisplayName("Клиент")]

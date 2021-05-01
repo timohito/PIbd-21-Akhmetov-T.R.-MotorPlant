@@ -5,6 +5,7 @@ using MotorPlantBusinessLogic.Interfaces;
 using MotorPlantBusinessLogic.ViewModels;
 using System.Linq;
 using MotorPlantListImplement.Models;
+using MotorPlantBusinessLogic.Enums;
 
 namespace MotorPlantListImplement.Implements
 {
@@ -16,64 +17,15 @@ namespace MotorPlantListImplement.Implements
         {
             source = DataListSingleton.GetInstance();
         }
-
-        private Order CreateModel(OrderBindingModel model, Order order)
-        {
-            order.EngineId = model.EngineId;
-            order.Count = model.Count;
-            order.Sum = model.Sum;
-            order.Status = model.Status;
-            order.DateCreate = model.DateCreate;
-            order.DateImplement = model.DateImplement;
-            order.ClientId = model.ClientId.Value;
-            return order;
-        }
-
-        private OrderViewModel CreateModel(Order order)
-        {
-            string EngineName = null;
-            string clientFIO = null;
-            foreach (Engine eng in source.Engines)
-            {
-                if (eng.Id == order.EngineId)
-                {
-                    EngineName = eng.EngineName;
-                }
-            }
-
-            foreach (var client in source.Clients)
-            {
-                if (client.Id == order.ClientId)
-                {
-                    clientFIO = client.ClientFIO;
-                }
-            }
-
-            return new OrderViewModel
-            {
-                Id = order.Id,
-                EngineName = EngineName,
-                EngineId = order.EngineId,
-                Count = order.Count,
-                Sum = order.Sum,
-                Status = order.Status,
-                DateCreate = order.DateCreate,
-                DateImplement = order.DateImplement,
-                ClientId = order.ClientId,
-                ClientFIO = clientFIO
-            };
-        }
-
         public List<OrderViewModel> GetFullList()
         {
             List<OrderViewModel> result = new List<OrderViewModel>();
-            foreach (var order in source.Orders)
+            foreach (var component in source.Orders)
             {
-                result.Add(CreateModel(order));
+                result.Add(CreateModel(component));
             }
             return result;
         }
-
         public List<OrderViewModel> GetFilteredList(OrderBindingModel model)
         {
             if (model == null)
@@ -81,60 +33,54 @@ namespace MotorPlantListImplement.Implements
                 return null;
             }
             List<OrderViewModel> result = new List<OrderViewModel>();
-            foreach (var order in source.Orders)
+            foreach (var Order in source.Orders)
             {
-                if ((!model.DateFrom.HasValue && !model.DateTo.HasValue && order.DateCreate.Date == model.DateCreate.Date) ||
-                    (model.DateFrom.HasValue && model.DateTo.HasValue && order.DateCreate.Date >= model.DateFrom.Value.Date && order.DateCreate.Date <= model.DateTo.Value.Date)
-                    || (model.ClientId.HasValue && order.ClientId == model.ClientId))
+                if ((!model.DateFrom.HasValue && !model.DateTo.HasValue && Order.DateCreate.Date == model.DateCreate.Date) ||
+(model.DateFrom.HasValue && model.DateTo.HasValue && Order.DateCreate.Date >= model.DateFrom.Value.Date && Order.DateCreate.Date <= model.DateTo.Value.Date) ||
+(model.ClientId.HasValue && Order.ClientId == model.ClientId) ||
+(model.FreeOrders.HasValue && model.FreeOrders.Value && Order.Status == OrderStatus.Принят) ||
+(model.ImplementerId.HasValue && Order.ImplementerId == model.ImplementerId && Order.Status == OrderStatus.Выполняется))
                 {
-                    result.Add(CreateModel(order));
+                    result.Add(CreateModel(Order));
                 }
             }
             return result;
         }
-
         public OrderViewModel GetElement(OrderBindingModel model)
         {
             if (model == null)
             {
                 return null;
             }
-            foreach (var order in source.Orders)
+            foreach (var Order in source.Orders)
             {
-                if (order.Id == model.Id || (order.EngineId ==
-               model.EngineId && order.Count == model.Count))
+                if (Order.Id == model.Id)
                 {
-                    return CreateModel(order);
+                    return CreateModel(Order);
                 }
             }
             return null;
         }
-
         public void Insert(OrderBindingModel model)
         {
-            Order tempOrder = new Order
+            Order tempOrder = new Order { Id = 1 };
+            foreach (var Order in source.Orders)
             {
-                Id = 1
-            };
-            foreach (var order in source.Orders)
-            {
-                if (order.Id >= tempOrder.Id)
+                if (Order.Id >= tempOrder.Id)
                 {
-                    tempOrder.Id = order.Id + 1;
+                    tempOrder.Id = Order.Id + 1;
                 }
             }
             source.Orders.Add(CreateModel(model, tempOrder));
         }
-
         public void Update(OrderBindingModel model)
         {
             Order tempOrder = null;
-
-            foreach (var order in source.Orders)
+            foreach (var Order in source.Orders)
             {
-                if (order.Id == model.Id)
+                if (Order.Id == model.Id)
                 {
-                    tempOrder = order;
+                    tempOrder = Order;
                 }
             }
             if (tempOrder == null)
@@ -143,7 +89,6 @@ namespace MotorPlantListImplement.Implements
             }
             CreateModel(model, tempOrder);
         }
-
         public void Delete(OrderBindingModel model)
         {
             for (int i = 0; i < source.Orders.Count; ++i)
@@ -155,6 +100,60 @@ namespace MotorPlantListImplement.Implements
                 }
             }
             throw new Exception("Элемент не найден");
+        }
+        private Order CreateModel(OrderBindingModel model, Order order)
+        {
+            order.EngineId = model.EngineId;
+            order.ClientId = (int)model.ClientId;
+            order.ImplementerId = model.ImplementerId;
+            order.Count = model.Count;
+            order.Status = model.Status;
+            order.Sum = model.Sum;
+            order.DateCreate = model.DateCreate;
+            order.DateImplement = model.DateImplement;
+            return order;
+        }
+        private OrderViewModel CreateModel(Order order)
+        {
+            string EngineName = "";
+            for (int i = 0; i < source.Engines.Count; ++i)
+            {
+                if (source.Engines[i].Id == order.EngineId)
+                {
+                    EngineName = source.Engines[i].EngineName;
+                }
+            }
+            string clientFIO = "";
+            for (int i = 0; i < source.Clients.Count; ++i)
+            {
+                if (source.Clients[i].Id == order.ClientId)
+                {
+                    clientFIO = source.Clients[i].ClientFIO;
+                }
+            }
+            string ImplementerFIO = "";
+            for (int i = 0; i < source.Implementers.Count; ++i)
+            {
+                if (source.Implementers[i].Id == order.ImplementerId)
+                {
+                    clientFIO = source.Implementers[i].ImplementerFIO;
+                }
+            }
+            return new OrderViewModel
+            {
+                Id = order.Id,
+                EngineName = EngineName,
+                EngineId = order.EngineId,
+                ClientId = order.ClientId,
+                ClientFIO = clientFIO,
+                ImplementerId = order.ImplementerId,
+                ImplementerFIO = ImplementerFIO,
+                Count = order.Count,
+                Status = order.Status,
+                Sum = order.Sum,
+                DateCreate = order.DateCreate,
+                DateImplement = order.DateImplement,
+            };
         }
     }
 }

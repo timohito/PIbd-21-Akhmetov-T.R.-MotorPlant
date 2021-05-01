@@ -1,4 +1,5 @@
 ﻿using MotorPlantBusinessLogic.BindingModels;
+using MotorPlantBusinessLogic.Enums;
 using MotorPlantBusinessLogic.Interfaces;
 using MotorPlantBusinessLogic.ViewModels;
 using MotorPlantFileImplement.Models;
@@ -29,9 +30,11 @@ namespace MotorPlantFileImplement.Implements
 			}
 			return source.Orders
 			.Where(rec => (!model.DateFrom.HasValue && !model.DateTo.HasValue && rec.DateCreate.Date == model.DateCreate.Date) ||
-			(model.DateFrom.HasValue && model.DateTo.HasValue && rec.DateCreate.Date >= model.DateFrom.Value.Date && rec.DateCreate.Date <= model.DateTo.Value.Date)
-			|| (model.ClientId.HasValue && rec.ClientId == model.ClientId))
-			.Select(CreateModel)
+			(model.DateFrom.HasValue && model.DateTo.HasValue && rec.DateCreate.Date >= model.DateFrom.Value.Date && rec.DateCreate.Date <= model.DateTo.Value.Date) ||
+			(model.ClientId.HasValue && rec.ClientId == model.ClientId) ||
+(model.FreeOrders.HasValue && model.FreeOrders.Value && rec.Status == OrderStatus.Принят) ||
+(model.ImplementerId.HasValue && rec.ImplementerId == model.ImplementerId && rec.Status == OrderStatus.Выполняется))
+            .Select(CreateModel)
 			.ToList();
 		}
 		public OrderViewModel GetElement(OrderBindingModel model)
@@ -81,13 +84,14 @@ namespace MotorPlantFileImplement.Implements
 		}
 		private Order CreateModel(OrderBindingModel model, Order order)
 		{
+			order.ClientId = (int)model.ClientId;
 			order.EngineId = model.EngineId;
+			order.ImplementerId = model.ImplementerId;
 			order.Count = model.Count;
 			order.Status = model.Status;
 			order.Sum = model.Sum;
 			order.DateCreate = model.DateCreate;
 			order.DateImplement = model.DateImplement;
-			order.ClientId = model.ClientId.Value;
 			return order;
 		}
 
@@ -100,6 +104,8 @@ namespace MotorPlantFileImplement.Implements
 				ClientId = order.ClientId,
 				ClientFIO = source.Clients.FirstOrDefault(client => client.Id == order.ClientId)?.ClientFIO,
 				EngineName = source.Engines.FirstOrDefault(p => p.Id == order.EngineId)?.EngineName,
+				ImplementerId = order.ImplementerId,
+				ImplementerFIO = source.Implementers.FirstOrDefault(e => e.Id == order.ImplementerId)?.ImplementerFIO,
 				Count = order.Count,
 				Status = order.Status,
 				Sum = order.Sum,

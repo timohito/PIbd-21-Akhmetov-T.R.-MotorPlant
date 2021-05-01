@@ -11,6 +11,9 @@ namespace MotorPlantBusinessLogic.BindingModels
 		public int? Id { get; set; }
 
 		[DataMember]
+		public int? ImplementerId { get; set; }
+
+		[DataMember]
 		public int EngineId { get; set; }
 
 		[DataMember]
@@ -36,5 +39,8 @@ namespace MotorPlantBusinessLogic.BindingModels
 
 		[DataMember]
 		public DateTime? DateTo { get; set; }
+
+		[DataMember]
+		public bool? FreeOrders { get; set; }
 	}
 }

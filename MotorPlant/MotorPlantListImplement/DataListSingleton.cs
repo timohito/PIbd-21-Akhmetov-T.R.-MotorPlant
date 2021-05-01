@@ -10,6 +10,7 @@ namespace MotorPlantListImplement
         public List<Order> Orders { get; set; }
         public List<Engine> Engines { get; set; }
         public List<Client> Clients { get; set; }
+        public List<Implementer> Implementers { get; set; }
 
         private DataListSingleton()
         {
@@ -17,6 +18,7 @@ namespace MotorPlantListImplement
             Orders = new List<Order>();
             Engines = new List<Engine>();
             Clients = new List<Client>();
+            Implementers = new List<Implementer>();
         }
 
         public static DataListSingleton GetInstance()

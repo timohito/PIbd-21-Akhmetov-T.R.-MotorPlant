@@ -38,7 +38,7 @@ namespace MotorPlantView
                     dataGridView.Columns[0].Visible = false;
                     dataGridView.Columns[1].Visible = false;
                     dataGridView.Columns[2].Visible = false;
-                    dataGridView.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                    dataGridView.Columns[3].Visible = false;
                 }
                 else
                 {
@@ -66,37 +66,17 @@ namespace MotorPlantView
             form.ShowDialog();
             LoadData();
         }
-        private void ButtonTakeOrderInWork_Click(object sender, EventArgs e)
+        private void запускРаботToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (dataGridView.SelectedRows.Count == 1)
-            {
-                int id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value);
-                try
-                {
-                    _orderLogic.TakeOrderInWork(new ChangeStatusBindingModel { OrderId = id });
-                    LoadData();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
+            var workModeling = Container.Resolve<WorkModelling>();
+            workModeling.DoWork();
+            MessageBox.Show("Работы запущены", "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
-        private void ButtonOrderReady_Click(object sender, EventArgs e)
+
+        private void исполнителиToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (dataGridView.SelectedRows.Count == 1)
-            {
-                int id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value);
-                try
-                {
-                    _orderLogic.FinishOrder(new ChangeStatusBindingModel { OrderId = id });
-                    LoadData();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
+            var form = Container.Resolve<FormImplementers>();
+            form.ShowDialog();
         }
         private void ButtonPayOrder_Click(object sender, EventArgs e)
         {

@@ -9,6 +9,10 @@ namespace MotorPlantListImplement
 	{
 		public int Id { get; set; }
 
+		public int ClientId { get; set; }
+
+		public int? ImplementerId { get; set; }
+
 		public int EngineId { get; set; }
 
 		public int Count { get; set; }
@@ -16,8 +20,6 @@ namespace MotorPlantListImplement
 		public decimal Sum { get; set; }
 
 		public OrderStatus Status { get; set; }
-
-		public int ClientId { get; set; }
 
 		public DateTime DateCreate { get; set; }
 
