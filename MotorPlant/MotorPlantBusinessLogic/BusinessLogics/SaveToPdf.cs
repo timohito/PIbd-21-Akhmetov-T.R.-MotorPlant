@@ -32,7 +32,7 @@ namespace MotorPlantBusinessLogic.BuisnessLogics
             CreateRow(new PdfRowParameters
             {
                 Table = table,
-                Texts = new List<string> { "Дата заказа", "Изделие", "Количество", "Сумма", "Статус" },
+                Texts = new List<string> { "Клиент", "Дата заказа", "Изделие", "Количество", "Сумма", "Статус" },
                 Style = "NormalTitle",
                 ParagraphAlignment = ParagraphAlignment.Center
             });
@@ -41,7 +41,7 @@ namespace MotorPlantBusinessLogic.BuisnessLogics
                 CreateRow(new PdfRowParameters
                 {
                     Table = table,
-                    Texts = new List<string> { order.DateCreate.ToShortDateString(),
+                    Texts = new List<string> { order.ClientFIO, order.DateCreate.ToShortDateString(),
                         order.EngineName, order.Count.ToString(), order.Sum.ToString(), order.Status.ToString()
                         },
                     Style = "Normal",

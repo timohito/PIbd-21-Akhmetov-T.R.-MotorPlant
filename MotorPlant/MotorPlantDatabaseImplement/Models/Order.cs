@@ -10,6 +10,8 @@ namespace MotorPlantDatabaseImplement.Models
 
 		public int EngineId { get; set; }
 
+		public int ClientId { get; set; }
+
 		[Required]
 		public int Count { get; set; }
 
@@ -23,6 +25,8 @@ namespace MotorPlantDatabaseImplement.Models
 		public DateTime DateCreate { get; set; }
 
 		public virtual Engine Engine { get; set; }
+
+		public virtual Client Client { get; set; }
 
 		public DateTime? DateImplement { get; set; }
 	}

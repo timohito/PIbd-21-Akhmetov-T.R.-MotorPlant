@@ -13,30 +13,46 @@ namespace MotorPlantView
 		[Dependency]
 		public new IUnityContainer Container { get; set; }
 
-		private readonly EngineLogic _logicE;
+		private readonly EngineLogic _logicP;
 
 		private readonly OrderLogic _logicO;
 
-		public FormCreateOrder(EngineLogic logicE, OrderLogic logicO)
+		private readonly ClientLogic _logicC;
+
+		public FormCreateOrder(EngineLogic logicP, OrderLogic logicO, ClientLogic logicC)
 		{
 			InitializeComponent();
-			_logicE = logicE;
+			_logicP = logicP;
 			_logicO = logicO;
+			_logicC = logicC;
 		}
 
 		private void FormCreateOrder_Load(object sender, EventArgs e)
 		{
 			try
 			{
-				List<EngineViewModel> list = _logicE.Read(null);
-				if (list != null)
+				List<EngineViewModel> listEngines = _logicP.Read(null);
+				List<ClientViewModel> listClients = _logicC.Read(null);
+				if (listEngines != null)
 				{
+					var clients = _logicC.Read(null);
 					comboBoxEngine.DisplayMember = "EngineName";
 					comboBoxEngine.ValueMember = "Id";
-					comboBoxEngine.DataSource = list;
+					comboBoxEngine.DataSource = listEngines;
 					comboBoxEngine.SelectedItem = null;
+
+					comboBoxClients.DataSource = clients;
+					comboBoxClients.DisplayMember = "ClientFIO";
+					comboBoxClients.ValueMember = "Id";
 				}
-                else
+				if (listClients != null)
+				{
+					comboBoxClients.DisplayMember = "ClientFIO";
+					comboBoxClients.ValueMember = "Id";
+					comboBoxClients.DataSource = listClients;
+					comboBoxClients.SelectedItem = null;
+				}
+				else
                 {
 					throw new Exception("Не удалось загрузить список изделий");
                 }
@@ -53,7 +69,7 @@ namespace MotorPlantView
 				try
 				{
 					int id = Convert.ToInt32(comboBoxEngine.SelectedValue);
-					EngineViewModel Engine = _logicE.Read(new EngineBindingModel { Id = id })?[0];
+					EngineViewModel Engine = _logicP.Read(new EngineBindingModel { Id = id })?[0];
 					int count = Convert.ToInt32(textBoxCount.Text);
 					textBoxSum.Text = (count * Engine?.Price ?? 0).ToString();
 				}
@@ -83,13 +99,19 @@ namespace MotorPlantView
 				MessageBox.Show("Выберите изделие", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return;
 			}
+			if (comboBoxClients.SelectedValue == null)
+			{
+				MessageBox.Show("Выберите клиента", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				return;
+			}
 			try
 			{
 				_logicO.CreateOrder(new CreateOrderBindingModel
 				{
+					ClientId = Convert.ToInt32(comboBoxClients.SelectedValue),
 					EngineId = Convert.ToInt32(comboBoxEngine.SelectedValue),
 					Count = Convert.ToInt32(textBoxCount.Text),
-					Sum = Convert.ToDecimal(textBoxSum.Text)
+					Sum = Convert.ToDecimal(textBoxSum.Text),
 				});
 				MessageBox.Show("Сохранение прошло успешно", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information);
 				DialogResult = DialogResult.OK;

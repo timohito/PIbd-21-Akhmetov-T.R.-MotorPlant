@@ -17,6 +17,8 @@ namespace MotorPlantListImplement
 
 		public OrderStatus Status { get; set; }
 
+		public int ClientId { get; set; }
+
 		public DateTime DateCreate { get; set; }
 
 		public DateTime? DateImplement { get; set; }

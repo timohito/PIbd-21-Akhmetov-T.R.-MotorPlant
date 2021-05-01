@@ -11,114 +11,6 @@ namespace MotorPlantDatabaseImplement.Implements
 {
     public class OrderStorage : IOrderStorage
     {
-        public List<OrderViewModel> GetFullList()
-        {
-            using (var context = new MotorPlantDatabase())
-            {
-                return context.Orders
-                .Select(rec => new OrderViewModel
-                {
-                    Id = rec.Id,
-                    EngineId = rec.EngineId,
-                    EngineName = context.Engines.Include(en => en.Orders).FirstOrDefault(en => en.Id == rec.EngineId).EngineName,
-                    Count = rec.Count,
-                    Sum = rec.Sum,
-                    Status = rec.Status,
-                    DateCreate = rec.DateCreate,
-                    DateImplement = rec.DateImplement,
-                })
-                .ToList();
-            }
-        }
-        public List<OrderViewModel> GetFilteredList(OrderBindingModel model)
-        {
-            if (model == null)
-            {
-                return null;
-            }
-            using (var context = new MotorPlantDatabase())
-            {
-                return context.Orders
-                .Where(rec => rec.EngineId == model.EngineId || (rec.DateCreate >= model.DateFrom && rec.DateCreate <= model.DateTo))
-                .Include(rec => rec.Engine)
-                .Select(rec => new OrderViewModel
-                {
-                    Id = rec.Id,
-                    EngineId = rec.EngineId,
-                    EngineName = context.Engines.Include(en => en.Orders).FirstOrDefault(en => en.Id == rec.EngineId).EngineName,
-                    Count = rec.Count,
-                    Sum = rec.Sum,
-                    Status = rec.Status,
-                    DateCreate = rec.DateCreate,
-                    DateImplement = rec.DateImplement,
-                })
-                .ToList();
-            }
-        }
-        public OrderViewModel GetElement(OrderBindingModel model)
-        {
-            if (model == null)
-            {
-                return null;
-            }
-            using (var context = new MotorPlantDatabase())
-            {
-                var order = context.Orders
-                .FirstOrDefault(rec => rec.Id == model.Id);
-                return order != null ?
-                new OrderViewModel
-                {
-                    Id = order.Id,
-                    EngineId = order.EngineId,
-                    EngineName = context.Engines.Include(en => en.Orders).FirstOrDefault(rec => rec.Id == order.EngineId)?.EngineName,
-                    Count = order.Count,
-                    Sum = order.Sum,
-                    Status = order.Status,
-                    DateCreate = order.DateCreate,
-                    DateImplement = order.DateImplement,
-                } :
-                null;
-            }
-        }
-        public void Insert(OrderBindingModel model)
-        {
-            using (var context = new MotorPlantDatabase())
-            {
-                Order order = new Order
-                {
-                    EngineId = model.EngineId,
-                    Count = model.Count,
-                    Sum = model.Sum,
-                    Status = model.Status,
-                    DateCreate = model.DateCreate,
-                    DateImplement = model.DateImplement,
-                };
-                context.Orders.Add(order);
-                context.SaveChanges();
-                CreateModel(model, order);
-                context.SaveChanges();
-            }
-        }
-        public void Update(OrderBindingModel model)
-        {
-            using (var context = new MotorPlantDatabase())
-            {
-                var element = context.Orders.FirstOrDefault(rec => rec.Id == model.Id);
-                if (element == null)
-                {
-                    throw new Exception("Элемент не найден");
-                }
-                element.EngineId = model.EngineId;
-                element.Count = model.Count;
-                element.Sum = model.Sum;
-                element.Status = model.Status;
-                element.DateCreate = model.DateCreate;
-                element.DateImplement = model.DateImplement;
-                CreateModel(model, element);
-                context.SaveChanges();
-            }
-        }
-
         public void Delete(OrderBindingModel model)
         {
             using (var context = new MotorPlantDatabase())
@@ -131,37 +23,117 @@ namespace MotorPlantDatabaseImplement.Implements
                 }
                 else
                 {
-                    throw new Exception("Элемент не найден");
+                    throw new Exception("Element not found");
                 }
             }
         }
 
-        private Order CreateModel(OrderBindingModel model, Order order)
+        public OrderViewModel GetElement(OrderBindingModel model)
         {
             if (model == null)
             {
                 return null;
             }
-
             using (var context = new MotorPlantDatabase())
             {
-                Engine element = context.Engines.FirstOrDefault(rec => rec.Id == model.EngineId);
-                if (element != null)
-                {
-                    if(element.Orders == null)
-                    {
-                        element.Orders = new List<Order>();
-                    }
-                    element.Orders.Add(order);
-                    context.Engines.Update(element);
-                    context.SaveChanges();
-                }
-                else
-                {
-                    throw new Exception("Элемент не найден");
-                }
+                var order = context.Orders.Include(rec => rec.Engine)
+                .Include(rec => rec.Client)
+                .FirstOrDefault(rec => rec.Id == model.Id);
+                return order != null ?
+                CreateModel(order) : null;
             }
+        }
+
+        public List<OrderViewModel> GetFilteredList(OrderBindingModel model)
+        {
+            if (model == null)
+            {
+                return null;
+            }
+            using (var context = new MotorPlantDatabase())
+            {
+                return context.Orders.Include(rec => rec.Engine)
+                    .Include(rec => rec.Client)
+                    .Where(rec => (!model.DateFrom.HasValue &&
+                    !model.DateTo.HasValue && rec.DateCreate.Date == model.DateCreate.Date) ||
+                    (model.DateFrom.HasValue && model.DateTo.HasValue && rec.DateCreate.Date >=
+                    model.DateFrom.Value.Date && rec.DateCreate.Date <= model.DateTo.Value.Date) ||
+                    (model.ClientId.HasValue && rec.ClientId == model.ClientId))
+                    .Select(CreateModel).ToList();
+            }
+        }
+
+        public List<OrderViewModel> GetFullList()
+        {
+            using (var context = new MotorPlantDatabase())
+            {
+                return context.Orders.Include(rec => rec.Engine)
+                    .Include(rec => rec.Client)
+                    .Select(CreateModel).ToList();
+            }
+        }
+
+        public void Insert(OrderBindingModel model)
+        {
+            if (!model.ClientId.HasValue)
+            {
+                throw new Exception("Client not specified");
+            }
+            using (var context = new MotorPlantDatabase())
+            {
+                context.Orders.Add(CreateModel(model, new Order()));
+                context.SaveChanges();
+            }
+        }
+
+        public void Update(OrderBindingModel model)
+        {
+            using (var context = new MotorPlantDatabase())
+            {
+                var element = context.Orders.Include(rec => rec.Client)
+                    .Include(rec => rec.Engine)
+                    .FirstOrDefault(rec => rec.Id == model.Id);
+                if (element == null)
+                {
+                    throw new Exception("Element not found");
+                }
+                if (!model.ClientId.HasValue)
+                {
+                    model.ClientId = element.ClientId;
+                }
+                CreateModel(model, element);
+                context.SaveChanges();
+            }
+        }
+
+        private OrderViewModel CreateModel(Order order)
+        {
+            return new OrderViewModel
+            {
+                Id = order.Id,
+                EngineId = order.EngineId,
+                ClientId = order.ClientId,
+                ClientFIO = order.Client.ClientFIO,
+                EngineName = order.Engine.EngineName,
+                Count = order.Count,
+                Sum = order.Sum,
+                Status = order.Status,
+                DateCreate = order.DateCreate,
+                DateImplement = order?.DateImplement
+            };
+        }
+
+        private Order CreateModel(OrderBindingModel model, Order order)
+        {
+            order.EngineId = model.EngineId;
+            order.ClientId = Convert.ToInt32(model.ClientId);
+            order.Count = model.Count;
+            order.Status = model.Status;
+            order.Sum = model.Sum;
+            order.DateCreate = model.DateCreate;
+            order.DateImplement = model.DateImplement;
             return order;
         }
     }
+
 }
