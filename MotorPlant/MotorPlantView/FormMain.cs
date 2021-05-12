@@ -115,5 +115,17 @@ namespace MotorPlantView
         {
             LoadData();
         }
+
+        private void ПополнениеСкладаToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = Container.Resolve<FormFillStore>();
+            form.ShowDialog();
+        }
+
+        private void СкладыToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = Container.Resolve<FormStores>();
+            form.ShowDialog();
+        }
     }
 }

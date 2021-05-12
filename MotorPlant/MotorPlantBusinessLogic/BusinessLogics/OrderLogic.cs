@@ -10,10 +10,14 @@ namespace MotorPlantBusinessLogic.BusinessLogics
 	public class OrderLogic
 	{
 		private readonly IOrderStorage _orderStorage;
+		private readonly IEngineStorage _engineStorage;
+		private readonly IStoreStorage _storeStorage;
 
-		public OrderLogic(IOrderStorage orderStorage)
+		public OrderLogic(IOrderStorage orderStorage, IEngineStorage engineStorage, IStoreStorage warehouseStorage)
 		{
 			_orderStorage = orderStorage;
+			_engineStorage = engineStorage;
+			_storeStorage = warehouseStorage;
 		}
 
 		public List<OrderViewModel> Read(OrderBindingModel model)
@@ -52,6 +56,11 @@ namespace MotorPlantBusinessLogic.BusinessLogics
 			{
 				throw new Exception("Заказ не в статусе \"Принят\"");
 			}
+			if (!_storeStorage.CheckEnginesByComponents(order.EngineId, order.Count))
+			{
+				throw new Exception("Недостаточно компонентов на складах");
+			}
+			_storeStorage.Extract(order.EngineId, order.Count);
 			_orderStorage.Update(new OrderBindingModel
 			{
 				Id = order.Id,

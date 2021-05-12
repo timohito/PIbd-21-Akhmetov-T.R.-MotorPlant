@@ -13,11 +13,14 @@ namespace MotorPlantListImplement
 
 		public List<Engine> Engines { get; set; }
 
+		public List<Store> Stores { get; set; }
+
 		private DataListSingleton()
 		{
 			Components = new List<Component>();
 			Orders = new List<Order>();
 			Engines = new List<Engine>();
+			Stores = new List<Store>();
 		}
 
 		public static DataListSingleton GetInstance()

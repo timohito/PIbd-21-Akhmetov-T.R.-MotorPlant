@@ -58,9 +58,9 @@ namespace MotorPlantView
 				if (EngineComponents != null)
 				{
 					dataGridView.Rows.Clear();
-					foreach (var pc in EngineComponents)
+					foreach (var ec in EngineComponents)
 					{
-						dataGridView.Rows.Add(new object[] { pc.Value.Item1, pc.Value.Item2 });
+						dataGridView.Rows.Add(new object[] { ec.Value.Item1, ec.Value.Item2 });
 					}
 				}
 			}
@@ -145,7 +145,7 @@ namespace MotorPlantView
 				logic.CreateOrUpdate(new EngineBindingModel
 				{
 					Id = id,
-				EngineName = textBoxName.Text,
+					EngineName = textBoxName.Text,
 					Price = Convert.ToDecimal(textBoxPrice.Text),
 					EngineComponents = EngineComponents
 				});
