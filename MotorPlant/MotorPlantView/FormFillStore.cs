@@ -14,7 +14,7 @@ namespace MotorPlantView
         public new IUnityContainer Container { get; set; }
 
         private readonly StoreLogic storeLogic;
-        private readonly ComponentLogic componentLogic;
+
         public int StoreId { get { return Convert.ToInt32(comboBoxStore.SelectedValue); } set { comboBoxStore.SelectedValue = value; } }
         public int ComponentId { get { return Convert.ToInt32(comboBoxComponent.SelectedValue); } set { comboBoxComponent.SelectedValue = value; } }
         public int Count { get { return Convert.ToInt32(textBoxCount.Text); } set { textBoxCount.Text = value.ToString(); } }

@@ -146,5 +146,15 @@ namespace MotorPlantListImplement.Implements
                 StoreComponents = StoreComponents
             };
         }
+
+        public bool CheckEnginesByComponents(int EngineId, int Count)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Extract(int ComponentId, int Count)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

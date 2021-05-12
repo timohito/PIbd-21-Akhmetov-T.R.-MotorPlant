@@ -13,5 +13,7 @@ namespace MotorPlantBusinessLogic.Interfaces
 		void Insert(StoreBindingModel model);
 		void Update(StoreBindingModel model);
 		void Delete(StoreBindingModel model);
+		bool CheckEnginesByComponents(int EngineId, int Count);
+		void Extract(int EngineId, int Count);
 	}
 }
