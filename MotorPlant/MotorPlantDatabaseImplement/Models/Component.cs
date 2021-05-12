@@ -13,5 +13,7 @@ namespace MotorPlantDatabaseImplement.Models
 
 		[ForeignKey("ComponentId")]
 		public virtual List<EngineComponent> EngineComponents { get; set; }
+		[ForeignKey("ComponentId")]
+		public virtual List<StoreComponent> StoreComponents { get; set; }
 	}
 }
