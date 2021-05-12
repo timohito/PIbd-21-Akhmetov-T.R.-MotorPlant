@@ -62,11 +62,11 @@ namespace MotorPlantListImplement.Implements
         public void Insert(OrderBindingModel model)
         {
             Order tempOrder = new Order { Id = 1 };
-            foreach (var Order in source.Orders)
+            foreach (var order in source.Orders)
             {
-                if (Order.Id >= tempOrder.Id)
+                if (order.Id >= tempOrder.Id)
                 {
-                    tempOrder.Id = Order.Id + 1;
+                    tempOrder.Id = order.Id + 1;
                 }
             }
             source.Orders.Add(CreateModel(model, tempOrder));
@@ -75,11 +75,11 @@ namespace MotorPlantListImplement.Implements
         public void Update(OrderBindingModel model)
         {
             Order tempOrder = null;
-            foreach (var Order in source.Orders)
+            foreach (var order in source.Orders)
             {
-                if (Order.Id == model.Id)
+                if (order.Id == model.Id)
                 {
-                    tempOrder = Order;
+                    tempOrder = order;
                 }
             }
             if (tempOrder == null)

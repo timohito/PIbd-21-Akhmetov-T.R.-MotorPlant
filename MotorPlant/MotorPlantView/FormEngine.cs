@@ -17,7 +17,7 @@ namespace MotorPlantView
 
 		private int? id;
 
-		private Dictionary<int, (string, int)> engineComponents;
+		private Dictionary<int, (string, int)> EngineComponents;
 
 		public FormEngine(EngineLogic service)
 		{
@@ -36,7 +36,7 @@ namespace MotorPlantView
 					{
 						textBoxName.Text = view.EngineName;
 						textBoxPrice.Text = view.Price.ToString();
-						engineComponents = view.EngineComponents;
+						EngineComponents = view.EngineComponents;
 						LoadData();
 					}
 				}
@@ -47,7 +47,7 @@ namespace MotorPlantView
 			}
 			else
 			{
-				engineComponents = new Dictionary<int, (string, int)>();
+				EngineComponents = new Dictionary<int, (string, int)>();
 			}
 		}
 
@@ -55,10 +55,10 @@ namespace MotorPlantView
 		{
 			try
 			{
-				if (engineComponents != null)
+				if (EngineComponents != null)
 				{
 					dataGridView.Rows.Clear();
-					foreach (var ec in engineComponents)
+					foreach (var ec in EngineComponents)
 					{
 						dataGridView.Rows.Add(new object[] { ec.Value.Item1, ec.Value.Item2 });
 					}
@@ -75,13 +75,13 @@ namespace MotorPlantView
 			var form = Container.Resolve<FormEngineComponent>();
 			if (form.ShowDialog() == DialogResult.OK)
 			{
-				if (engineComponents.ContainsKey(form.Id))
+				if (EngineComponents.ContainsKey(form.Id))
 				{
-					engineComponents[form.Id] = (form.ComponentName, form.Count);
+					EngineComponents[form.Id] = (form.ComponentName, form.Count);
 				}
 				else
 				{
-					engineComponents.Add(form.Id, (form.ComponentName, form.Count));
+					EngineComponents.Add(form.Id, (form.ComponentName, form.Count));
 				}
 				LoadData();
 			}
@@ -93,10 +93,10 @@ namespace MotorPlantView
 				var form = Container.Resolve<FormEngineComponent>();
 				int id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value);
 				form.Id = id;
-				form.Count = engineComponents[id].Item2;
+				form.Count = EngineComponents[id].Item2;
 				if (form.ShowDialog() == DialogResult.OK)
 				{
-					engineComponents[form.Id] = (form.ComponentName, form.Count);
+					EngineComponents[form.Id] = (form.ComponentName, form.Count);
 					LoadData();
 				}
 			}
@@ -109,7 +109,7 @@ namespace MotorPlantView
 				{
 					try
 					{
-						engineComponents.Remove(Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value));
+						EngineComponents.Remove(Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value));
 					}
 					catch (Exception ex)
 					{
@@ -135,7 +135,7 @@ namespace MotorPlantView
 				MessageBox.Show("Заполните цену", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return;
 			}
-			if (engineComponents == null || engineComponents.Count == 0)
+			if (EngineComponents == null || EngineComponents.Count == 0)
 			{
 				MessageBox.Show("Заполните компоненты", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return;
@@ -147,7 +147,7 @@ namespace MotorPlantView
 					Id = id,
 					EngineName = textBoxName.Text,
 					Price = Convert.ToDecimal(textBoxPrice.Text),
-					EngineComponents = engineComponents
+					EngineComponents = EngineComponents
 				});
 				MessageBox.Show("Сохранение прошло успешно", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information);
 				DialogResult = DialogResult.OK;

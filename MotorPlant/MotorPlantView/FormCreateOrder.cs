@@ -28,12 +28,12 @@ namespace MotorPlantView
 		{
 			try
 			{
-				List<EngineViewModel> engineList = _logicE.Read(null);
-				if (engineList != null)
+				List<EngineViewModel> list = _logicE.Read(null);
+				if (list != null)
 				{
 					comboBoxEngine.DisplayMember = "EngineName";
 					comboBoxEngine.ValueMember = "Id";
-					comboBoxEngine.DataSource = engineList;
+					comboBoxEngine.DataSource = list;
 					comboBoxEngine.SelectedItem = null;
 				}
                 else

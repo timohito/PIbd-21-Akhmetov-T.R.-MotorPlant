@@ -43,7 +43,6 @@ namespace MotorPlantListImplement.Implements
 			}
 			return result;
 		}
-
 		public EngineViewModel GetElement(EngineBindingModel model)
 		{
 			if (model == null)
@@ -59,28 +58,26 @@ namespace MotorPlantListImplement.Implements
 			}
 			return null;
 		}
-
 		public void Insert(EngineBindingModel model)
 		{
 			Engine tempEngine = new Engine { Id = 1, EngineComponents = new Dictionary<int, int>() };
-			foreach (var Engine in source.Engines)
+			foreach (var engine in source.Engines)
 			{
-				if (Engine.Id >= tempEngine.Id)
+				if (engine.Id >= tempEngine.Id)
 				{
-					tempEngine.Id = Engine.Id + 1;
+					tempEngine.Id = engine.Id + 1;
 				}
 			}
 			source.Engines.Add(CreateModel(model, tempEngine));
 		}
-
 		public void Update(EngineBindingModel model)
 		{
 			Engine tempEngine = null;
-			foreach (var Engine in source.Engines)
+			foreach (var engine in source.Engines)
 			{
-				if (Engine.Id == model.Id)
+				if (engine.Id == model.Id)
 				{
-					tempEngine = Engine;
+					tempEngine = engine;
 				}
 			}
 			if (tempEngine == null)
@@ -89,7 +86,6 @@ namespace MotorPlantListImplement.Implements
 			}
 			CreateModel(model, tempEngine);
 		}
-
 		public void Delete(EngineBindingModel model)
 		{
 			for (int i = 0; i < source.Engines.Count; ++i)
@@ -132,7 +128,7 @@ namespace MotorPlantListImplement.Implements
 		private EngineViewModel CreateModel(Engine engine)
 		{
 			// требуется дополнительно получить список компонентов для изделия с названиями и их количество
-			Dictionary<int, (string, int)> EngineComponents = new Dictionary<int, (string, int)>();
+			Dictionary<int, (string, int)> engineComponents = new Dictionary<int, (string, int)>();
 			foreach (var ec in engine.EngineComponents)
 			{
 				string componentName = string.Empty;
@@ -144,14 +140,14 @@ namespace MotorPlantListImplement.Implements
 						break;
 					}
 				}
-				EngineComponents.Add(ec.Key, (componentName, ec.Value));
+				engineComponents.Add(ec.Key, (componentName, ec.Value));
 			}
 			return new EngineViewModel
 			{
 				Id = engine.Id,
 				EngineName = engine.EngineName,
 				Price = engine.Price,
-				EngineComponents = EngineComponents
+				EngineComponents = engineComponents
 			};
 		}
 	}
