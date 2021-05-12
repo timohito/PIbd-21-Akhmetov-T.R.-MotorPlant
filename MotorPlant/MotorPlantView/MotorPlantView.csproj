@@ -73,6 +73,12 @@
     <Compile Include="FormCreateOrder.Designer.cs">
       <DependentUpon>FormCreateOrder.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormFillStore.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormFillStore.Designer.cs">
+      <DependentUpon>FormFillStore.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -97,6 +103,18 @@
     <Compile Include="FormEngines.Designer.cs">
       <DependentUpon>FormEngines.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormStore.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormStore.Designer.cs">
+      <DependentUpon>FormStore.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormStores.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormStores.Designer.cs">
+      <DependentUpon>FormStores.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <EmbeddedResource Include="FormComponent.resx">
       <DependentUpon>FormComponent.cs</DependentUpon>
@@ -106,6 +124,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormCreateOrder.resx">
       <DependentUpon>FormCreateOrder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormFillStore.resx">
+      <DependentUpon>FormFillStore.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
@@ -118,6 +139,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormEngines.resx">
       <DependentUpon>FormEngines.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormStore.resx">
+      <DependentUpon>FormStore.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormStores.resx">
+      <DependentUpon>FormStores.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
