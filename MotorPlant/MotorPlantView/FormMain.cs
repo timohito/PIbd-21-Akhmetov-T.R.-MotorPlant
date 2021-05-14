@@ -128,5 +128,11 @@ namespace MotorPlantView
             var form = Container.Resolve<FormClients>();
             form.ShowDialog();
         }
+
+        private void письмаToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = Container.Resolve<FormMails>();
+            form.ShowDialog();
+        }
     }
 }

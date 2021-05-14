@@ -53,7 +53,7 @@ namespace MotorPlantView
 					comboBoxClients.SelectedItem = null;
 				}
 				else
-                {
+				{
 					throw new Exception("Не удалось загрузить список изделий");
                 }
 			}
@@ -101,17 +101,18 @@ namespace MotorPlantView
 			}
 			if (comboBoxClients.SelectedValue == null)
 			{
-				MessageBox.Show("Выберите клиента", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show("Select client", "Error", MessageBoxButtons.OK,
+			   MessageBoxIcon.Error);
 				return;
 			}
 			try
 			{
 				_logicO.CreateOrder(new CreateOrderBindingModel
 				{
-					ClientId = Convert.ToInt32(comboBoxClients.SelectedValue),
 					EngineId = Convert.ToInt32(comboBoxEngine.SelectedValue),
 					Count = Convert.ToInt32(textBoxCount.Text),
-					Sum = Convert.ToDecimal(textBoxSum.Text)
+					Sum = Convert.ToDecimal(textBoxSum.Text),
+					ClientId = Convert.ToInt32(comboBoxClients.SelectedValue)
 				});
 				MessageBox.Show("Сохранение прошло успешно", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information);
 				DialogResult = DialogResult.OK;

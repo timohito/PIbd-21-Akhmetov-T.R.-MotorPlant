@@ -21,5 +21,8 @@ namespace MotorPlantDatabaseImplement.Models
 
         [ForeignKey("ClientId")]
         public virtual List<Order> Order { get; set; }
+
+        [ForeignKey("ClientId")]
+        public List<MessageInfo> Messages { get; set; }
     }
 }

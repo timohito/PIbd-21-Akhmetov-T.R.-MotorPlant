@@ -1,12 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using MotorPlantBusinessLogic.BindingModels;
+using MotorPlantBusinessLogic.Interfaces;
+using MotorPlantBusinessLogic.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using MotorPlantBusinessLogic.BindingModels;
-using MotorPlantBusinessLogic.Enums;
-using MotorPlantBusinessLogic.Interfaces;
-using MotorPlantBusinessLogic.ViewModels;
 using MotorPlantDatabaseImplement.Models;
+using Microsoft.EntityFrameworkCore;
+using MotorPlantBusinessLogic.Enums;
 
 namespace MotorPlantDatabaseImplement.Implements
 {
@@ -75,7 +75,7 @@ namespace MotorPlantDatabaseImplement.Implements
                     ImplementerId = order.ImplementerId,
                     EngineName = context.Engines.Include(pr => pr.Orders).FirstOrDefault(rec => rec.Id == order.EngineId)?.EngineName,
                     ClientFIO = context.Clients.Include(pr => pr.Order).FirstOrDefault(rec => rec.Id == order.ClientId)?.ClientFIO,
-                    ImplementerFIO = order.Implementer?.ImplementerFIO,
+                    ImplementerFIO = context.Implementers.Include(pr => pr.Order).FirstOrDefault(rec => rec.Id == order.ImplementerId)?.ImplementerFIO,
                     Count = order.Count,
                     Sum = order.Sum,
                     Status = order.Status,
@@ -169,7 +169,7 @@ namespace MotorPlantDatabaseImplement.Implements
                 }
                 else
                 {
-                    throw new Exception("Изделие не найдено");
+                    throw new Exception("Изделие не найден");
                 }
                 Client client = context.Clients.FirstOrDefault(rec => rec.Id == model.ClientId);
                 if (client != null)
@@ -201,4 +201,5 @@ namespace MotorPlantDatabaseImplement.Implements
             return order;
         }
     }
+
 }

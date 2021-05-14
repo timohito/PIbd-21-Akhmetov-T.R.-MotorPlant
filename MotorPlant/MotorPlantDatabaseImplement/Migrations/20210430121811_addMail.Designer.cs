@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MotorPlantDatabaseImplement;
 
 namespace MotorPlantDatabaseImplement.Migrations
 {
     [DbContext(typeof(MotorPlantDatabase))]
-    partial class MotorPlantDatabaseModelSnapshot : ModelSnapshot
+    [Migration("20210430121811_addMail")]
+    partial class addMail
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -124,7 +126,7 @@ namespace MotorPlantDatabaseImplement.Migrations
                     b.ToTable("Implementers");
                 });
 
-            modelBuilder.Entity("MotorPlantDatabaseImplement.Models.Message", b =>
+            modelBuilder.Entity("MotorPlantDatabaseImplement.Models.MessageInfo", b =>
                 {
                     b.Property<string>("MessageId")
                         .HasColumnType("nvarchar(450)");
@@ -211,7 +213,7 @@ namespace MotorPlantDatabaseImplement.Migrations
             modelBuilder.Entity("MotorPlantDatabaseImplement.Models.MessageInfo", b =>
                 {
                     b.HasOne("MotorPlantDatabaseImplement.Models.Client", "Client")
-                        .WithMany("Messages")
+                        .WithMany("MessageInfo")
                         .HasForeignKey("ClientId");
                 });
 

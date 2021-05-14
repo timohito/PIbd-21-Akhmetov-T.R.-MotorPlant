@@ -18,11 +18,11 @@ namespace MotorPlantBusinessLogic.BusinessLogics
 
         public List<ClientViewModel> Read(ClientBindingModel model)
         {
-            if (model == null)
+            if (model == null || model.Email != null)
             {
                 return _clientStorage.GetFullList();
             }
-            if (model.Id.HasValue)
+            if (model.Id.HasValue || model.Email != null)
             {
                 return new List<ClientViewModel> { _clientStorage.GetElement(model) };
             }

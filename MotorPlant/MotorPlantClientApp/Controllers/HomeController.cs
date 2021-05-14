@@ -124,8 +124,6 @@ namespace MotorPlantClientApp.Controllers
             {
                 return;
             }
-            var str = Program.Client.Id;
-            //прописать запрос
             APIClient.PostRequest("api/main/createorder", new CreateOrderBindingModel
             {
                 EngineId = engine,
@@ -134,6 +132,15 @@ namespace MotorPlantClientApp.Controllers
                 Count = count
             });
             Response.Redirect("Index");
+        }
+
+        public IActionResult Mails()
+        {
+            if (Program.Client == null)
+            {
+                return Redirect("~/Home/Enter");
+            }
+            return View(APIClient.GetRequest<List<MessageInfoViewModel>>($"api/client/GetMessages?clientId={Program.Client.Id}"));
         }
 
         [HttpPost]
