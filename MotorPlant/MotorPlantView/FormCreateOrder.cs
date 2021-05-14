@@ -31,28 +31,20 @@ namespace MotorPlantView
 		{
 			try
 			{
-				List<EngineViewModel> listEngines = _logicP.Read(null);
-				List<ClientViewModel> listClients = _logicC.Read(null);
-				if (listEngines != null)
+				List<EngineViewModel> list = _logicP.Read(null);
+				if (list != null)
 				{
 					var clients = _logicC.Read(null);
 					comboBoxEngine.DisplayMember = "EngineName";
 					comboBoxEngine.ValueMember = "Id";
-					comboBoxEngine.DataSource = listEngines;
+					comboBoxEngine.DataSource = list;
 					comboBoxEngine.SelectedItem = null;
 
 					comboBoxClients.DataSource = clients;
 					comboBoxClients.DisplayMember = "ClientFIO";
 					comboBoxClients.ValueMember = "Id";
 				}
-				if (listClients != null)
-				{
-					comboBoxClients.DisplayMember = "ClientFIO";
-					comboBoxClients.ValueMember = "Id";
-					comboBoxClients.DataSource = listClients;
-					comboBoxClients.SelectedItem = null;
-				}
-				else
+                else
                 {
 					throw new Exception("Не удалось загрузить список изделий");
                 }
@@ -101,17 +93,18 @@ namespace MotorPlantView
 			}
 			if (comboBoxClients.SelectedValue == null)
 			{
-				MessageBox.Show("Выберите клиента", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show("Select client", "Error", MessageBoxButtons.OK,
+			   MessageBoxIcon.Error);
 				return;
 			}
 			try
 			{
 				_logicO.CreateOrder(new CreateOrderBindingModel
 				{
-					ClientId = Convert.ToInt32(comboBoxClients.SelectedValue),
 					EngineId = Convert.ToInt32(comboBoxEngine.SelectedValue),
 					Count = Convert.ToInt32(textBoxCount.Text),
-					Sum = Convert.ToDecimal(textBoxSum.Text)
+					Sum = Convert.ToDecimal(textBoxSum.Text),
+					ClientId = Convert.ToInt32(comboBoxClients.SelectedValue)
 				});
 				MessageBox.Show("Сохранение прошло успешно", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information);
 				DialogResult = DialogResult.OK;

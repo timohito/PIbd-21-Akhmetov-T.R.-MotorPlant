@@ -13,6 +13,8 @@ using Microsoft.Extensions.Logging;
 using MotorPlantBusinessLogic.BusinessLogics;
 using MotorPlantBusinessLogic.Interfaces;
 using MotorPlantDatabaseImplement.Implements;
+using MotorPlantBusinessLogic.HelperModels;
+using System.Threading;
 
 namespace MotorPlantRestApi
 {
@@ -31,15 +33,31 @@ namespace MotorPlantRestApi
             services.AddTransient<IClientStorage, ClientStorage>();
             services.AddTransient<IOrderStorage, OrderStorage>();
             services.AddTransient<IEngineStorage, EngineStorage>();
+            services.AddTransient<IMessageInfoStorage, MessageInfoStorage>();
             services.AddTransient<OrderLogic>();
             services.AddTransient<ClientLogic>();
             services.AddTransient<EngineLogic>();
+            services.AddTransient<MailLogic>();
+            MailLogic.MailConfig(new MailConfig
+            {
+                SmtpClientHost = "smtp.gmail.com",
+                SmtpClientPort = 587,
+                MailLogin = "fakefortplabb@gmail.com",
+                MailPassword = "1234timur",
+            });
             services.AddControllers().AddNewtonsoftJson();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IMessageInfoStorage messageInfoStorage)
         {
+            var timer = new Timer(new TimerCallback(MailCheck), new MailCheckInfo
+            {
+                PopHost = "pop.gmail.com",
+                PopPort = 995,
+                Storage = messageInfoStorage
+            }, 0, 100000);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -55,6 +73,11 @@ namespace MotorPlantRestApi
             {
                 endpoints.MapControllers();
             });
+        }
+
+        private static void MailCheck(object obj)
+        {
+            MailLogic.MailCheck((MailCheckInfo)obj);
         }
     }
 }

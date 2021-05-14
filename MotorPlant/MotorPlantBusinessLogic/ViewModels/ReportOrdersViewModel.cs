@@ -5,8 +5,6 @@ namespace MotorPlantBusinessLogic.ViewModels
 {
     public class ReportOrdersViewModel
     {
-        public string ClientFIO { get; set; }
-
         public DateTime DateCreate { get; set; }
 
         public string EngineName { get; set; }

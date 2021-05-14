@@ -16,11 +16,13 @@ namespace MotorPlantFileImplement
 		private readonly string EngineFileName = "Engine.xml";
 		private readonly string ClientFileName = "Client.xml";
 		private readonly string ImplementerFileName = "Implementer.xml";
+		private readonly string MessageFileName = "Message.xml";
 		public List<Component> Components { get; set; }
 		public List<Order> Orders { get; set; }
 		public List<Engine> Engines { get; set; }
 		public List<Client> Clients { get; set; }
 		public List<Implementer> Implementers { get; set; }
+		public List<MessageInfo> Messages { get; set; }
 		private FileDataListSingleton()
 		{
 			Components = LoadComponents();
@@ -28,6 +30,7 @@ namespace MotorPlantFileImplement
 			Engines = LoadEngines();
 			Clients = LoadClients();
 			Implementers = LoadImplementers();
+			Messages = LoadMessages();
 		}
 		public static FileDataListSingleton GetInstance()
 		{
@@ -44,6 +47,7 @@ namespace MotorPlantFileImplement
 			SaveEngines();
 			SaveClients();
 			SaveImplementers();
+			SaveMessages();
 		}
 		private List<Component> LoadComponents()
 		{
@@ -97,17 +101,17 @@ namespace MotorPlantFileImplement
 				var xElements = xDocument.Root.Elements("Engine").ToList();
 				foreach (var elem in xElements)
 				{
-					var engComp = new Dictionary<int, int>();
+					var prodComp = new Dictionary<int, int>();
 					foreach (var component in elem.Element("EngineComponents").Elements("EngineComponent").ToList())
 					{
-						engComp.Add(Convert.ToInt32(component.Element("Key").Value), Convert.ToInt32(component.Element("Value").Value));
+						prodComp.Add(Convert.ToInt32(component.Element("Key").Value), Convert.ToInt32(component.Element("Value").Value));
 					}
 					list.Add(new Engine
 					{
 						Id = Convert.ToInt32(elem.Attribute("Id").Value),
 						EngineName = elem.Element("EngineName").Value,
 						Price = Convert.ToDecimal(elem.Element("Price").Value),
-						EngineComponents = engComp
+						EngineComponents = prodComp
 					});
 				}
 			}
@@ -191,6 +195,29 @@ namespace MotorPlantFileImplement
 				xDocument.Save(OrderFileName);
 			}
 		}
+		private List<MessageInfo> LoadMessages()
+		{
+			var list = new List<MessageInfo>();
+			if (File.Exists(MessageFileName))
+			{
+				XDocument xDocument = XDocument.Load(MessageFileName);
+				var xElements = xDocument.Root.Elements("Message").ToList();
+
+				foreach (var elem in xElements)
+				{
+					list.Add(new MessageInfo
+					{
+						MessageId = elem.Attribute("Id").Value,
+						ClientId = Convert.ToInt32(elem.Element("ClientId").Value),
+						SenderName = elem.Element("ClientId").Value,
+						Subject = elem.Element("Subject").Value,
+						Body = elem.Element("Body").Value,
+						DateDelivery = Convert.ToDateTime(elem.Element("DateDelivery").Value)
+					});
+				}
+			}
+			return list;
+		}
 		private void SaveEngines()
 		{
 			if (Engines != null)
@@ -248,6 +275,25 @@ namespace MotorPlantFileImplement
 				}
 				XDocument xDocument = new XDocument(xElement);
 				xDocument.Save(ImplementerFileName);
+			}
+		}
+		private void SaveMessages()
+		{
+			if (Messages != null)
+			{
+				var xElement = new XElement("Message");
+				foreach (var message in Messages)
+				{
+					xElement.Add(new XElement("Message",
+					new XAttribute("MessageId", message.MessageId),
+					new XElement("Subject", message.Subject),
+					new XElement("SenderName", message.SenderName),
+					new XElement("Body", message.Body),
+					new XElement("ClientId", message.ClientId),
+					new XElement("DateDelivery", message.DateDelivery)));
+				}
+				XDocument xDocument = new XDocument(xElement);
+				xDocument.Save(MessageFileName);
 			}
 		}
 	}
