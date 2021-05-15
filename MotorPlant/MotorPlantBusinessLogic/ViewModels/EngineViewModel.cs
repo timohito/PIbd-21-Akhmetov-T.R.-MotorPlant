@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.Serialization;
+using MotorPlantBusinessLogic.Attributes;
 
 namespace MotorPlantBusinessLogic.ViewModels
 {
@@ -11,11 +12,11 @@ namespace MotorPlantBusinessLogic.ViewModels
 		public int Id { get; set; }
 
 		[DataMember]
-		[DisplayName("Название изделия")]
+		[Column(title: "Название изделия", gridViewAutoSize: GridViewAutoSize.Fill)]
 		public string EngineName { get; set; }
 
 		[DataMember]
-		[DisplayName("Цена")]
+		[Column(title: "Цена", width: 50)]
 		public decimal Price { get; set; }
 
 		[DataMember]
