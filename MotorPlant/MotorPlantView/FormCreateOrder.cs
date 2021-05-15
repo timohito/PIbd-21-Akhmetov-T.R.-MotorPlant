@@ -31,20 +31,28 @@ namespace MotorPlantView
 		{
 			try
 			{
-				List<EngineViewModel> list = _logicP.Read(null);
-				if (list != null)
+				List<EngineViewModel> listEngines = _logicP.Read(null);
+				List<ClientViewModel> listClients = _logicC.Read(null);
+				if (listEngines != null)
 				{
 					var clients = _logicC.Read(null);
 					comboBoxEngine.DisplayMember = "EngineName";
 					comboBoxEngine.ValueMember = "Id";
-					comboBoxEngine.DataSource = list;
+					comboBoxEngine.DataSource = listEngines;
 					comboBoxEngine.SelectedItem = null;
 
 					comboBoxClients.DataSource = clients;
 					comboBoxClients.DisplayMember = "ClientFIO";
 					comboBoxClients.ValueMember = "Id";
 				}
-                else
+				if (listClients != null)
+				{
+					comboBoxClients.DisplayMember = "ClientFIO";
+					comboBoxClients.ValueMember = "Id";
+					comboBoxClients.DataSource = listClients;
+					comboBoxClients.SelectedItem = null;
+				}
+				else
                 {
 					throw new Exception("Не удалось загрузить список изделий");
                 }
