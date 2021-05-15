@@ -55,7 +55,7 @@ namespace MotorPlantRestApi
             {
                 PopHost = "pop.gmail.com",
                 PopPort = 995,
-                Storage = messageInfoStorage
+                MessageStorage = messageInfoStorage
             }, 0, 100000);
 
             if (env.IsDevelopment())

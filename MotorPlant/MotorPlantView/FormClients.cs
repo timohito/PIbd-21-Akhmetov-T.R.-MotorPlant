@@ -18,56 +18,45 @@ namespace MotorPlantView
         [Dependency]
         public new IUnityContainer Container { get; set; }
 
-        private readonly ClientLogic logic;
-
-        public FormClients(ClientLogic logic)
+        private readonly ClientLogic _clientLogic;
+        public FormClients(ClientLogic clientLogic)
         {
             InitializeComponent();
-            this.logic = logic;
+            this._clientLogic = clientLogic;
         }
-
         private void FormClients_Load(object sender, EventArgs e)
         {
             LoadData();
         }
-
         private void LoadData()
         {
             try
             {
-                dataGridView.DataSource = logic.Read(null);
-                dataGridView.Columns["Id"].Visible = false;
+                Program.ConfigGrid(_clientLogic.Read(null), dataGridView);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK,
-               MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
-        private void ButtonDel_Click(object sender, EventArgs e)
+        private void ButtonDelete_Click(object sender, EventArgs e)
         {
             if (dataGridView.SelectedRows.Count == 1)
             {
-                if (MessageBox.Show("Delete entry", "Question", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                if (MessageBox.Show("Удалить запись", "Вопрос", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     int id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value);
                     try
                     {
-                        logic.Delete(new ClientBindingModel { Id = id });
+                        _clientLogic.Delete(new ClientBindingModel { Id = id });
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                     LoadData();
                 }
             }
-        }
-
-        private void ButtonRef_Click(object sender, EventArgs e)
-        {
-            LoadData();
         }
     }
 }

@@ -16,24 +16,16 @@ namespace MotorPlantBusinessLogic.BusinessLogics
     public class MailLogic
     {
         private static string smtpClientHost;
-
         private static int smtpClientPort;
-
         private static string mailLogin;
-
         private static string mailPassword;
-
         private readonly IMessageInfoStorage _messageInfoStorage;
-
         private readonly IClientStorage _clientStorage;
-
-        public MailLogic(IMessageInfoStorage messageInfoStorage, IClientStorage
-        clientStorage)
+        public MailLogic(IMessageInfoStorage messageInfoStorage, IClientStorage clientStorage)
         {
             _messageInfoStorage = messageInfoStorage;
             _clientStorage = clientStorage;
         }
-
         public List<MessageInfoViewModel> Read(MessageInfoBindingModel model)
         {
             if (model == null)
@@ -42,17 +34,12 @@ namespace MotorPlantBusinessLogic.BusinessLogics
             }
             return _messageInfoStorage.GetFilteredList(model);
         }
-
         public void CreateOrder(MessageInfoBindingModel model)
         {
-            var client = _clientStorage.GetElement(new ClientBindingModel
-            {
-                Email = model.FromMailAddress
-            });
+            var client = _clientStorage.GetElement(new ClientBindingModel { Email = model.FromMailAddress });
             model.ClientId = client?.Id;
             _messageInfoStorage.Insert(model);
         }
-
         public static void MailConfig(MailConfig config)
         {
             smtpClientHost = config.SmtpClientHost;
@@ -60,7 +47,6 @@ namespace MotorPlantBusinessLogic.BusinessLogics
             mailLogin = config.MailLogin;
             mailPassword = config.MailPassword;
         }
-
         public static async void MailSendAsync(MailSendInfo info)
         {
             if (string.IsNullOrEmpty(smtpClientHost) || smtpClientPort == 0)
@@ -71,15 +57,13 @@ namespace MotorPlantBusinessLogic.BusinessLogics
             {
                 return;
             }
-            if (string.IsNullOrEmpty(info.MailAddress) ||
-            string.IsNullOrEmpty(info.Subject) || string.IsNullOrEmpty(info.Text))
+            if (string.IsNullOrEmpty(info.MailAddress) || string.IsNullOrEmpty(info.Subject) || string.IsNullOrEmpty(info.Text))
             {
                 return;
             }
             using (var objMailMessage = new MailMessage())
             {
-                using (var objSmtpClient = new SmtpClient(smtpClientHost,
-                smtpClientPort))
+                using (var objSmtpClient = new SmtpClient(smtpClientHost, smtpClientPort))
                 {
                     try
                     {
@@ -92,8 +76,7 @@ namespace MotorPlantBusinessLogic.BusinessLogics
                         objSmtpClient.UseDefaultCredentials = false;
                         objSmtpClient.EnableSsl = true;
                         objSmtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
-                        objSmtpClient.Credentials = new NetworkCredential(mailLogin,
-                        mailPassword);
+                        objSmtpClient.Credentials = new NetworkCredential(mailLogin, mailPassword);
                         await Task.Run(() => objSmtpClient.Send(objMailMessage));
                     }
                     catch (Exception)
@@ -103,7 +86,6 @@ namespace MotorPlantBusinessLogic.BusinessLogics
                 }
             }
         }
-
         public static async void MailCheck(MailCheckInfo info)
         {
             if (string.IsNullOrEmpty(info.PopHost) || info.PopPort == 0)
@@ -114,7 +96,7 @@ namespace MotorPlantBusinessLogic.BusinessLogics
             {
                 return;
             }
-            if (info.MessageStorage == null || info.ClientStorage == null)
+            if (info.MessageStorage == null)
             {
                 return;
             }
@@ -124,8 +106,7 @@ namespace MotorPlantBusinessLogic.BusinessLogics
                 {
                     try
                     {
-                        client.Connect(info.PopHost, info.PopPort,
-                        SecureSocketOptions.SslOnConnect);
+                        client.Connect(info.PopHost, info.PopPort, SecureSocketOptions.SslOnConnect);
                         client.Authenticate(mailLogin, mailPassword);
                         for (int i = 0; i < client.Count; i++)
                         {
@@ -138,11 +119,7 @@ namespace MotorPlantBusinessLogic.BusinessLogics
                                     MessageId = message.MessageId,
                                     FromMailAddress = mail.Address,
                                     Subject = message.Subject,
-                                    Body = message.TextBody,
-                                    ClientId = info.ClientStorage.GetElement(new ClientBindingModel
-                                    {
-                                        Email = mail.Address
-                                    })?.Id
+                                    Body = message.TextBody
                                 });
                             }
                         }

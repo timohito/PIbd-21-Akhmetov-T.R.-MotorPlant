@@ -53,7 +53,7 @@ namespace MotorPlantView
 					comboBoxClients.SelectedItem = null;
 				}
 				else
-				{
+                {
 					throw new Exception("Не удалось загрузить список изделий");
                 }
 			}

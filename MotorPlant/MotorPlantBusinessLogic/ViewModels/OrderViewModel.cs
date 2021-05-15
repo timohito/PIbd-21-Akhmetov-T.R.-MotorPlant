@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.Serialization;
 using MotorPlantBusinessLogic.Enums;
+using MotorPlantBusinessLogic.Attributes;
 
 namespace MotorPlantBusinessLogic.ViewModels
 {
@@ -9,6 +10,7 @@ namespace MotorPlantBusinessLogic.ViewModels
 	public class OrderViewModel
 	{
 		[DataMember]
+		[Column(title: "Номер", width: 100)]
 		public int Id { get; set; }
 
 		[DataMember]
@@ -21,35 +23,35 @@ namespace MotorPlantBusinessLogic.ViewModels
 		public int EngineId { get; set; }
 
 		[DataMember]
-		[DisplayName("ФИО Работника")]
+		[Column(title: "Исполнитель", width: 150)]
 		public string ImplementerFIO { get; set; }
 
 		[DataMember]
-		[DisplayName("Клиент")]
+		[Column(title: "Клиент", width: 150)]
 		public string ClientFIO { get; set; }
 
 		[DataMember]
-		[DisplayName("Изделие")]
+		[Column(title: "Изделие", width: 150)]
 		public string EngineName { get; set; }
 
 		[DataMember]
-		[DisplayName("Количество")]
+		[Column(title: "Количество", width: 100)]
 		public int Count { get; set; }
 
 		[DataMember]
-		[DisplayName("Сумма")]
+		[Column(title: "Сумма", width: 50)]
 		public decimal Sum { get; set; }
 
 		[DataMember]
-		[DisplayName("Статус")]
+		[Column(title: "Статус", width: 100)]
 		public OrderStatus Status { get; set; }
 
 		[DataMember]
-		[DisplayName("Дата создания")]
+		[Column(title: "Дата создания", width: 100)]
 		public DateTime DateCreate { get; set; }
 
 		[DataMember]
-		[DisplayName("Дата выполнения")]
+		[Column(title: "Дата выполнения", width: 100)]
 		public DateTime? DateImplement { get; set; }
 	}
 }
