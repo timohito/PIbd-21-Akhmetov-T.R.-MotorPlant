@@ -13,10 +13,12 @@ namespace MotorPlantBusinessLogic.BusinessLogics
     {
         private readonly IEngineStorage _engineStorage;
         private readonly IOrderStorage _orderStorage;
-        public ReportLogic(IEngineStorage engineStorage, IComponentStorage componentStorage, IOrderStorage orderStorage)
+        private readonly IStoreStorage _storeStorage;
+        public ReportLogic(IEngineStorage engineStorage, IComponentStorage componentStorage, IOrderStorage orderStorage, IStoreStorage storeStorage)
         {
             _engineStorage = engineStorage;
             _orderStorage = orderStorage;
+            _storeStorage = storeStorage;
         }
         /// <summary>
         /// Получение списка компонент с указанием, в каких изделиях используются
@@ -102,6 +104,71 @@ namespace MotorPlantBusinessLogic.BusinessLogics
                 DateFrom = model.DateFrom.Value,
                 DateTo = model.DateTo.Value,
                 Orders = GetOrders(model)
+            });
+        }
+
+        public List<ReportStoreComponentViewModel> GetStoreComponent()
+        {
+            var stores = _storeStorage.GetFullList();
+            var list = new List<ReportStoreComponentViewModel>();
+            foreach (var store in stores)
+            {
+                var record = new ReportStoreComponentViewModel
+                {
+                    StoreName = store.StoreName,
+                    Components = new List<Tuple<string, int>>(),
+                    TotalCount = 0
+                };
+                foreach (var component in store.StoreComponents)
+                {
+                    record.Components.Add(new Tuple<string, int>(component.Value.Item1, component.Value.Item2));
+                    record.TotalCount += component.Value.Item2;
+                }
+                list.Add(record);
+            }
+            return list;
+        }
+
+        public List<OrderReportByDateViewModel> GetOrderReportByDate()
+        {
+            return _orderStorage.GetFullList()
+                .GroupBy(order => order.DateCreate.ToShortDateString())
+                .Select(rec => new OrderReportByDateViewModel
+                {
+                    Date = Convert.ToDateTime(rec.Key),
+                    Count = rec.Count(),
+                    Sum = rec.Sum(order => order.Sum)
+                })
+                .ToList();
+        }
+
+        public void SaveStoresToWordFile(ReportBindingModel model)
+        {
+            SaveToWord.CreateStoresDoc(new StoreWordInfo
+            {
+                FileName = model.FileName,
+                Title = "Список складов",
+                Stores = _storeStorage.GetFullList()
+            });
+        }
+
+        public void SaveStoreComponentToExcelFile(ReportBindingModel model)
+        {
+            SaveToExcel.CreateStoresDoc(new StoresExcelInfo
+            {
+                FileName = model.FileName,
+                Title = "Список складов",
+                StoreComponents = GetStoreComponent()
+            });
+        }
+
+        public void SaveOrderReportByDateToPdfFile(ReportBindingModel model)
+        {
+            SaveToPdf.CreateDocOrderReportByDate(new PdfInfoOrderReportByDate
+            {
+                FileName = model.FileName,
+                Title = "Список заказов",
+                Orders = GetOrderReportByDate()
             });
         }
     }
