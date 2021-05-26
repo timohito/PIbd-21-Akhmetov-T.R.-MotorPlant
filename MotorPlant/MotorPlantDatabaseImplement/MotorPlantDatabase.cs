@@ -9,7 +9,7 @@ namespace MotorPlantDatabaseImplement
 		{
 			if (optionsBuilder.IsConfigured == false)
 			{
-				optionsBuilder.UseSqlServer(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=MotorPlantDatabase1;Integrated Security=True;MultipleActiveResultSets=True;");
+				optionsBuilder.UseSqlServer(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=MotorPlantDatabaseH;Integrated Security=True;MultipleActiveResultSets=True;");
 			}
 			base.OnConfiguring(optionsBuilder);
 		}
@@ -19,6 +19,10 @@ namespace MotorPlantDatabaseImplement
 		public virtual DbSet<Engine> Engines { set; get; }
 
 		public virtual DbSet<EngineComponent> EngineComponents { set; get; }
+
+		public virtual DbSet<Store> Stores { set; get; }
+
+		public virtual DbSet<StoreComponent> StoreComponents { set; get; }
 
 		public virtual DbSet<Order> Orders { set; get; }
 	}

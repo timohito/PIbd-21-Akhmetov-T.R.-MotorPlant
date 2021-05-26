@@ -111,6 +111,54 @@ namespace MotorPlantDatabaseImplement.Migrations
                     b.ToTable("Orders");
                 });
 
+            modelBuilder.Entity("MotorPlantDatabaseImplement.Models.Store", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("DateCreation")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ResponsibleName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StoreName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Stores");
+                });
+
+            modelBuilder.Entity("MotorPlantDatabaseImplement.Models.StoreComponent", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ComponentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StoreId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ComponentId");
+
+                    b.HasIndex("StoreId");
+
+                    b.ToTable("StoreComponents");
+                });
+
             modelBuilder.Entity("MotorPlantDatabaseImplement.Models.EngineComponent", b =>
                 {
                     b.HasOne("MotorPlantDatabaseImplement.Models.Component", "Component")
@@ -131,6 +179,21 @@ namespace MotorPlantDatabaseImplement.Migrations
                     b.HasOne("MotorPlantDatabaseImplement.Models.Engine", null)
                         .WithMany("Orders")
                         .HasForeignKey("EngineId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("MotorPlantDatabaseImplement.Models.StoreComponent", b =>
+                {
+                    b.HasOne("MotorPlantDatabaseImplement.Models.Component", "Component")
+                        .WithMany("StoreComponents")
+                        .HasForeignKey("ComponentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MotorPlantDatabaseImplement.Models.Store", "Store")
+                        .WithMany("StoreComponents")
+                        .HasForeignKey("StoreId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

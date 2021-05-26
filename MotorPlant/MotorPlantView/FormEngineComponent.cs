@@ -51,9 +51,9 @@ namespace MotorPlantView
                 DialogResult = DialogResult.OK;
                 Close();
             }
-            catch (Exception _)
+            catch (Exception ex)
             {
-                MessageBox.Show("В поле Количество могут быть только цифры", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
         }
