@@ -19,9 +19,9 @@ namespace MotorPlantListImplement.Implements
         public List<OrderViewModel> GetFullList()
         {
             List<OrderViewModel> result = new List<OrderViewModel>();
-            foreach (var order in source.Orders)
+            foreach (var component in source.Orders)
             {
-                result.Add(CreateModel(order));
+                result.Add(CreateModel(component));
             }
             return result;
         }
@@ -35,7 +35,7 @@ namespace MotorPlantListImplement.Implements
             List<OrderViewModel> result = new List<OrderViewModel>();
             foreach (var order in source.Orders)
             {
-                if (order.EngineId == model.EngineId)
+                if (order.EngineId == model.EngineId || (order.DateCreate >= model.DateFrom && order.DateCreate <= model.DateTo))
                 {
                     result.Add(CreateModel(order));
                 }
@@ -49,9 +49,10 @@ namespace MotorPlantListImplement.Implements
             {
                 return null;
             }
-            foreach (var order in source.Orders)
+            foreach (var order in source.Orders )
             {
-                if (order.Id == model.Id || order.EngineId == model.EngineId)
+                if (order.Id == model.Id || (order.EngineId ==
+               model.EngineId && order.Count == model.Count))
                 {
                     return CreateModel(order);
                 }

@@ -176,7 +176,7 @@ namespace MotorPlantDatabaseImplement.Migrations
 
             modelBuilder.Entity("MotorPlantDatabaseImplement.Models.Order", b =>
                 {
-                    b.HasOne("MotorPlantDatabaseImplement.Models.Engine", null)
+                    b.HasOne("MotorPlantDatabaseImplement.Models.Engine", "Engine")
                         .WithMany("Orders")
                         .HasForeignKey("EngineId")
                         .OnDelete(DeleteBehavior.Cascade)

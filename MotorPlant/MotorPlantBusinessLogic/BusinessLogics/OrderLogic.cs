@@ -19,7 +19,6 @@ namespace MotorPlantBusinessLogic.BusinessLogics
 			_engineStorage = engineStorage;
 			_storeStorage = warehouseStorage;
 		}
-
 		public List<OrderViewModel> Read(OrderBindingModel model)
 		{
 			if (model == null)
@@ -32,7 +31,6 @@ namespace MotorPlantBusinessLogic.BusinessLogics
 			}
 			return _orderStorage.GetFilteredList(model);
 		}
-
 		public void CreateOrder(CreateOrderBindingModel model)
 		{
 			_orderStorage.Insert(new OrderBindingModel
@@ -44,7 +42,6 @@ namespace MotorPlantBusinessLogic.BusinessLogics
 				Status = OrderStatus.Принят
 			});
 		}
-
 		public void TakeOrderInWork(ChangeStatusBindingModel model)
 		{
 			var order = _orderStorage.GetElement(new OrderBindingModel { Id = model.OrderId });
@@ -72,7 +69,6 @@ namespace MotorPlantBusinessLogic.BusinessLogics
 				Status = OrderStatus.Выполняется
 			});
 		}
-
 		public void FinishOrder(ChangeStatusBindingModel model)
 		{
 			var order = _orderStorage.GetElement(new OrderBindingModel { Id = model.OrderId });
@@ -91,7 +87,7 @@ namespace MotorPlantBusinessLogic.BusinessLogics
 				Count = order.Count,
 				Sum = order.Sum,
 				DateCreate = order.DateCreate,
-				DateImplement = DateTime.Now,
+				DateImplement = order.DateImplement,
 				Status = OrderStatus.Готов
 			});
 		}

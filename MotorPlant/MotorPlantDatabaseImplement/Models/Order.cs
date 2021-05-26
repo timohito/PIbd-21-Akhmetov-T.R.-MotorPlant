@@ -22,6 +22,8 @@ namespace MotorPlantDatabaseImplement.Models
 		[Required]
 		public DateTime DateCreate { get; set; }
 
+		public virtual Engine Engine { get; set; }
+
 		public DateTime? DateImplement { get; set; }
 	}
 }
